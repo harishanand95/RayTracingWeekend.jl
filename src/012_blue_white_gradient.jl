@@ -1,5 +1,5 @@
 include("010_points.jl")
-include("011_ray.jl")
+include("011_ray.jl") # TODO FIX THIS, imports everything
 
 using Images, ImageView
 
@@ -25,3 +25,30 @@ origin            = Point{Float32}(0, 0, 0)
 horizontal        = Point{Float32}(viewport_width, 0, 0) # h direction
 vertical          = Point{Float32}(0, viewport_height, 0) # veritcal direction
 lower_left_corner = origin - horizontal/2 - vertical/2 - Point{Float32}(0.0, 0.0, focal_length)
+
+
+# Render
+"""
+    ray_color(r::Ray) -> ::RGB{Float32}
+    
+"""
+function ray_color(r::Ray)
+  unit_vector::Point = r.direction / len(r.direction)
+  t = Float32(0.5*(unit_vector.y + 1.0))
+  return (1.0 - t) * RGB{Float32}(1.0, 1.0, 1.0) + t*RGB{Float32}(0.5, 0.7, 1.0)
+end
+
+
+img = rand(RGB{Float32}, image_height, image_width)
+
+for x in 1:image_height # rows
+  for y in 1:image_width # cols, not the best julia practise
+    i = Float32(x / image_height)
+    j = Float32(y / image_width)
+    # ray direction is lower_left_corner + component in x + component in y - origin(reference point)
+    ray = Ray(origin, lower_left_corner + j* horizontal + i*vertical - origin)
+    img[x, y] = ray_color(ray)
+  end
+end
+
+img

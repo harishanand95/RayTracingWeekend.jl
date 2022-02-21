@@ -23,7 +23,7 @@ Base.:-(p::Point) = Point(-p.x, -p.y, -p.z)
 
 
 """
-    Real / p::Point -> p::Point
+    p::Point / r::Real -> p::Point
 Returns a point divided by a real.
 """
 Base.:/(p::Point, r::Real) = Point(p.x/r, p.y/r, p.z/r)
@@ -34,6 +34,7 @@ Base.:/(p::Point, r::Real) = Point(p.x/r, p.y/r, p.z/r)
 Return a point muliplied by a real.
 """
 Base.:*(p::Point, r::Real) = Point(p.x*r, p.y*r, p.z*r)
+Base.:*(r::Real, p::Point)  = Point(p.x*r, p.y*r, p.z*r)
 
 
 """

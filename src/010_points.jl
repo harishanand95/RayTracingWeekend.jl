@@ -1,8 +1,9 @@
+# Based on https://raytracing.github.io/books/RayTracingInOneWeekend.html
 import Base
 
 abstract type AbstractXYZ <: Real end
 
-mutable struct Point{T} <: AbstractXYZ
+struct Point{T} <: AbstractXYZ
   x::T
   y::T
   z::T
@@ -13,7 +14,7 @@ p = Point{Int}(3, 4, 5)
 # create a float point
 p_fp32 = Point{Float32}(3.2, 4.1, 5.003)
 
-
+# https://docs.julialang.org/en/v1/manual/modules/#Qualified-names
 # https://discourse.julialang.org/t/bug-in-unary-operator-overloading-syntax/63117
 """
     - p::Point -> p::Point
@@ -33,7 +34,7 @@ Base.:/(p::Point, r::Real) = Point(p.x/r, p.y/r, p.z/r)
     Real * p::Point -> p::Point
 Return a point muliplied by a real.
 """
-Base.:*(p::Point, r::Real) = Point(p.x*r, p.y*r, p.z*r)
+Base.:*(p::Point, r::Real)  = Point(p.x*r, p.y*r, p.z*r)
 Base.:*(r::Real, p::Point)  = Point(p.x*r, p.y*r, p.z*r)
 
 
@@ -66,16 +67,21 @@ res = res/3
 
 
 # Addition - inplace add!(), add() -> ::Point, + operator
-"""
-    add!(p1::Point, p2::Point) 
+# inplace can slow things up, especially on a small ds like point
 
-Adds the Point p2 to Point p1.
-"""
-function add!(p1::Point, p2::Point)
-  p1.x = p1.x + p2.x
-  p1.y = p1.y + p2.y
-  p1.z = p1.z + p2.z
-end
+#"""
+#    add!(p1::Point, p2::Point) 
+#
+#Adds the Point p2 to Point p1.
+#"""
+#function add!(p1::Point, p2::Point)
+#  p1.x = p1.x + p2.x
+#  p1.y = p1.y + p2.y
+#  p1.z = p1.z + p2.z
+#end
+
+# This is wrong as you are going to write to p which is an Int
+# psum = add!(p, p_fp32)
 
 """
     add(p1::point, p2::point) -> ::point
@@ -100,31 +106,20 @@ p3 = add(p1, p2)
 p3_ = p1 + p2
 @assert p3 == p3_
 
-# test add!
-# Add Int to Float32
-p3 = p_fp32 + p
-# Add the int p to float p_fp32, inplace 
-add!(p_fp32, p)
-@assert p3 == p_fp32
-
-# This is wrong as you are going to write to p which is an Int
-# psum = add!(p, p_fp32)
-
 
 # Subtraction sub! inplace, sub and - operator
-"""
-    sub!(p1::Point, p2::Point) -> ::Point
-Subtract p2 from p1, and return a new point.
-"""
-function sub!(p1::Point, p2::Point)
-  return add!(p1, -p2)
-end
+#"""
+#    sub!(p1::Point, p2::Point) -> ::Point
+#Subtract p2 from p1, and return a new point.
+#"""
+#function sub!(p1::Point, p2::Point)
+#  return add!(p1, -p2)
+#end
 
-p1 = Point{Float32}(1.0, 2.0, 4.0)
-p2 = Point{Float32}(1.0,2.0, 4.0)
-sub!(p1, p2)
-@assert p1 == Point{Float32}(0, 0, 0)
-
+#p1 = Point{Float32}(1.0, 2.0, 4.0)
+#p2 = Point{Float32}(1.0,2.0, 4.0)
+#sub!(p1, p2)
+#@assert p1 == Point{Float32}(0, 0, 0)
 
 """
     sub(p1::Point, p2::Point) -> ::Point
@@ -133,7 +128,6 @@ Subtract p2 from p1, and return a new point.
 function sub(p1::Point, p2::Point)
   return p1 + (-p2) # not relying on Base.- as we compare later its results with Base.- results
 end
-
 
 """
     p3::Point = p1::Point - p2:Point
@@ -150,22 +144,21 @@ p3_ = p1 - p2
 @assert p3_ == p3
 
 # Muliplication - inplace mul!, mul and * operator
-"""
-    mul!(p1::Point, p2::Point)
+#"""
+#    mul!(p1::Point, p2::Point)
+#
+#  Multiply p1 and p2, and update p1 to p1*p2.
+#"""
+#function mul!(p1::Point, p2::Point)
+#  p1.x *= p2.x
+#  p1.y *= p2.y 
+#  p1.z *= p2.z
+#end
 
-  Multiply p1 and p2, and update p1 to p1*p2.
-"""
-function mul!(p1::Point, p2::Point)
-  p1.x *= p2.x
-  p1.y *= p2.y 
-  p1.z *= p2.z
-end
-
-p1 = Point{Float32}(1.0, 2.0, 4.0)
-p2 = Point{Float32}(1.0, 2.0, 4.0)
-mul!(p1, p2)
-@assert p1 == Point{Float32}(1.0, 4.0, 16.0)
-
+#p1 = Point{Float32}(1.0, 2.0, 4.0)
+#p2 = Point{Float32}(1.0, 2.0, 4.0)
+#mul!(p1, p2)
+#@assert p1 == Point{Float32}(1.0, 4.0, 16.0)
 
 """
     mul(p1::Point, p2::Point) -> ::Point
@@ -191,6 +184,7 @@ p3_ = mul(p1, p2)
 @assert p3 == p3_
 
 
+# calculate norm and length_squared for a point
 """
     len_squared(p1::Point) -> Real
 
@@ -220,6 +214,7 @@ p = Point{Float32}(0,3,4)
 @assert len(p) == 5.0
 
 
+# Dot product
 """
     p1::Point ⋅ p2::Point -> Float32
 Returns the result of dot product of 2 vectors
@@ -232,6 +227,7 @@ res = p1 ⋅ p2
 @assert res == 21.0f0
 
 
+# Cross product
 """
     p1::Point × p2::Point -> ::Point
 

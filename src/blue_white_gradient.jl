@@ -1,5 +1,5 @@
-include("010_points.jl")
-include("011_ray.jl") # TODO FIX THIS, imports everything
+include("xyz.jl")
+include("ray.jl") # TODO FIX THIS, imports everything
 
 using Images, ImageView
 
@@ -22,9 +22,10 @@ viewport_height   = Float32(2.0)
 viewport_width    = Float32(viewport_height * aspect_ratio)
 focal_length      = Float32(1.0)
 origin            = Point{Float32}(0, 0, 0)
-horizontal        = Point{Float32}(viewport_width, 0, 0) # h direction
-vertical          = Point{Float32}(0, viewport_height, 0) # veritcal direction
-lower_left_corner = origin - horizontal/2 - vertical/2 - Point{Float32}(0.0, 0.0, focal_length)
+horizontal        = Vec{Float32}(viewport_width, 0, 0) # h direction
+vertical          = Vec{Float32}(0, viewport_height, 0) # veritcal direction
+shift_in_z_axis   = Vec{Float32}(0.0, 0.0, -focal_length)
+lower_left_corner = Vec{Float32}(shift_in_z_axis.x, shift_in_z_axis.y, shift_in_z_axis.z) - horizontal/2 - vertical/2
 
 
 # Render
@@ -33,7 +34,7 @@ lower_left_corner = origin - horizontal/2 - vertical/2 - Point{Float32}(0.0, 0.0
     
 """
 function ray_color(r::Ray)
-  unit_vector::Point = r.direction / len(r.direction)
+  unit_vector::Vec = r.direction / len(r.direction)
   t = Float32(0.5*(unit_vector.y + 1.0))
   return (1.0 - t) * RGB{Float32}(1.0, 1.0, 1.0) + t*RGB{Float32}(0.5, 0.7, 1.0)
 end
@@ -46,7 +47,8 @@ for x in 1:image_height # rows
     i = Float32(x / image_height)
     j = Float32(y / image_width)
     # ray direction is lower_left_corner + component in x + component in y - origin(reference point)
-    ray = Ray(origin, lower_left_corner + j* horizontal + i*vertical - origin)
+    # we need to create a vec to store the new direction, as its calculated as a difference in 2 points
+    ray = Ray(origin, lower_left_corner + j*horizontal + i*vertical)
     img[x, y] = ray_color(ray)
   end
 end

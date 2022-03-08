@@ -1,12 +1,12 @@
-include("010_points.jl")
 using Images, ImageView
+include("xyz.jl")
 
 
 # Define ray P(t) = Origin + direction * (t)
 """
     r = Ray(origin, direction)
     r.origin ::Point 
-    r.direction ::Point 
+    r.direction ::Vec 
     at(r::Ray, t::Float32) ::Point 
 
 Rays simulate the physical rays, they have a direction and origin.
@@ -14,7 +14,7 @@ The value t will give you a point along the ray in positive and negative directi
 """
 struct Ray 
   origin::Point
-  direction::Point
+  direction::Vec
 end
 
 function at(r::Ray, t::Real)
@@ -26,7 +26,7 @@ function at(r::Ray, t::Real)
 end
 
 o = Point{Float32}(0.0, 0.0, 0.0)
-d = Point{Float32}(1.0, 1.0, 10.0)
+d = Vec{Float32}(1.0, 1.0, 10.0)
 r = Ray(o, d)
 
 out1 = at(r, 1.0)

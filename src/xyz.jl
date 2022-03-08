@@ -1,12 +1,10 @@
 # Based on https://raytracing.github.io/books/RayTracingInOneWeekend.html
 import Base
 
-
 # http://www.stochasticlifestyle.com/type-dispatch-design-post-object-oriented-programming-julia/
 abstract type AbstractXYZ{T<:Real} end
 abstract type AbstractPoint <: AbstractXYZ{Real} end
 abstract type AbstractVec <: AbstractXYZ{Real} end
-
 
 struct XYZ{T<:Real} <: AbstractXYZ{Real}
   x::T
@@ -25,6 +23,7 @@ struct Vec{T<:Real} <: AbstractVec
   y::T
   z::T
 end
+
 
 """
    print(p<:AbstractXYZ)
@@ -72,7 +71,6 @@ function Base.:-(p::AbstractXYZ)
     return XYZ{}(-p.x, -p.y, -p.z)
   end
 end
-
 
 x = XYZ{Float64}(1.0, 2.0, 3.0)
 neg_x = -x
@@ -231,14 +229,12 @@ Returns x² + y² + z²
 """
 len_squared(p1::AbstractXYZ) = p1.x^2 + p1.y^2 + p1.z^2
 
-
 """
     len(p1::AbstractXYZ) -> Real
 
 Returns the √(x² + y² + z²)
 """
 len(p1::AbstractXYZ) = sqrt(len_squared(p1))
-
 
 
 # Dot product

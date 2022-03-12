@@ -39,7 +39,7 @@ x = Vec{Float64}(1.0, 2.0, 3.0)
 print(x)
 
 """
-function print(p::AbstractXYZ)
+function Base.print(p::AbstractXYZ)
   if typeof(p) <: AbstractPoint
     println("Point($(p.x), $(p.y), $(p.z))")
   elseif typeof(p) <: AbstractVec
@@ -265,3 +265,8 @@ end
 p1 = Vec{Float32}(1.0, 2.0, 3.0)
 p2 = Vec{Float32}(1.0, 2.0, 3.0)
 p3 = p1 × p2
+
+
+to_vec(p::Point) = Vec{}(p.x, p.y, p.z)
+x1 = Point{Int32}(1.0, 2.0, 3.0)
+v1 = to_vec(x1)

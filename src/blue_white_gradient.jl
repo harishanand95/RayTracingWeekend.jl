@@ -57,23 +57,24 @@ img
 
 
 # Create a sphere 
-function hit_sphere(center::Point, radius::Real, r::Ray)
-  oc = to_vec(r.origin - center)
-  a = r.direction ⋅ r.direction
-  b = 2.0 * (oc ⋅ r.direction)
+function hit_sphere(center::Point, radius::Real, ray::Ray)
+  oc = to_vec(ray.origin - center)
+  a = ray.direction ⋅ ray.direction
+  b = 2.0 * (oc ⋅ ray.direction)
   c = oc ⋅ oc - (radius*radius)
   discriminant = b*b - 4*a*c
-  return (discriminant > 0)
+  if (discriminant < 0)
+    return -1.0;
+  end
+    return -b - sqrt(discriminant) / (2.0*a);
 end
 
-
-function ray_color_sphere(r1::Ray)
-  # println(hit_sphere(Point(0.0, 0.0, -1.0), 0.5, r))
-  if hit_sphere(Point(0.0, 0.0, -1.0), 0.5, r1) == true
+function ray_color_sphere(r::Ray)
+  t = hit_sphere(Point(0.0, 0.0, -1.0), 0.5, r)
+  if t != -1.0
     return RGB(1.0, 0.0, 0.0)
-  else
-    return ray_color(r1) # sky color  
   end
+  ray_color(r) # sky color 
 end
 
 img = rand(RGB{Float32}, image_height, image_width)
@@ -82,7 +83,6 @@ for x in 1:image_height # rows
   for y in 1:image_width # cols, not the best julia practise
     i = Float32(x / image_height)
     j = Float32(y / image_width)
-
     # ray direction is lower_left_corner + component in x + component in y - origin(reference point)
     # we need to create a vec to store the new direction, as its calculated as a difference in 2 points
     ray1 = Ray(origin, lower_left_corner + (j*horizontal) + (i*vertical))
@@ -90,3 +90,31 @@ for x in 1:image_height # rows
   end
 end
 img
+
+
+# Normal map color
+function ray_color_sphere_normal(r::Ray)
+  t = hit_sphere(Point(0.0, 0.0, -1.0), 0.5, r)
+  if t > 0.0
+    contact_vec = to_vec(at(r, t)) - Vec(0, 0, -1)
+    N = contact_vec / len(contact_vec)
+    return 0.5*RGB(N.x+1, N.y+1, N.z+1)
+  end
+  ray_color(r) # sky color 
+end
+
+img = rand(RGB{Float32}, image_height, image_width)
+
+for x in 1:image_height # rows
+  for y in 1:image_width # cols, not the best julia practise
+    i = Float32(x / image_height)
+    j = Float32(y / image_width)
+    # ray direction is lower_left_corner + component in x + component in y - origin(reference point)
+    # we need to create a vec to store the new direction, as its calculated as a difference in 2 points
+    ray1 = Ray(origin, lower_left_corner + (j*horizontal) + (i*vertical))
+    img[x, y] = ray_color_sphere_normal(ray1)
+  end
+end
+img
+
+

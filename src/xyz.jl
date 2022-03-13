@@ -266,7 +266,8 @@ p1 = Vec{Float32}(1.0, 2.0, 3.0)
 p2 = Vec{Float32}(1.0, 2.0, 3.0)
 p3 = p1 × p2
 
-
+# Convert a point to a vector (subtract from Vec(0.0, 0.0, 0.0))
 to_vec(p::Point) = Vec{}(p.x, p.y, p.z)
+
 x1 = Point{Int32}(1.0, 2.0, 3.0)
 v1 = to_vec(x1)

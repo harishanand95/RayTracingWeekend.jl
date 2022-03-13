@@ -18,7 +18,7 @@ struct Ray
 end
 
 function at(r::Ray, t::Real)
-  Point{Float32}(
+  Point{}(
     r.origin.x + t * r.direction.x,
     r.origin.y + t * r.direction.y,
     r.origin.z + t * r.direction.z
@@ -50,7 +50,7 @@ out3 = at(r, -10.0)
    pixel_color (p::Point) -> ::Point{Int8}
 Return an RGB pixel color for the input point p where p.x, p.y and p.z is 0-1 range.
 """
-pixel_color(p::Point) = RGB{Float64}(p.x, p.y, p.z)
+pixel_color(p::Point) = RGB(p.x, p.y, p.z)
 
 p1 = Point{Float32}(0.89, 0.25, 0.11)
 rgb = pixel_color(p1)
@@ -61,10 +61,9 @@ width = trunc(256)
 img = rand(RGB{Float32}, height, width)
 
 # julia is col major
-for i in 1:width
-  for j in 1:height
-    img[i, j] = pixel_color(Point(j/256, (256-i)/256, 0.25))
+for col in 1:width 
+  for row in 1:height 
+    img[row, col] = pixel_color(Point(col/256, (256-row)/256, 0.25))
   end
 end
-
 img

@@ -4,9 +4,9 @@ include("ray.jl")
 # HitRecord stores point where ray hits, "t", surface normal and if its front_face or not.
 
 """
-    Stores information of the point of impact for a ray.
+    Stores information on the point of impact for a ray.
     This includes where ray hits, "t" in o+d(t), surface normal 
-    and the impace was on the front side or back side.
+    and where the impact was like the front side or back side.
 """
 mutable struct HitRecord 
   p::Point{<:Real} 
@@ -88,6 +88,7 @@ function hit!(object::Sphere, ray::Ray, t_min::Float32, t_max::Float32, rec::Hit
 
   return true
 end
+
 
 """
   Apply ray hit! on all the `objects` in the scene. 

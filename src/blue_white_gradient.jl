@@ -46,7 +46,7 @@ img = rand(RGB{Float32}, image_height, image_width)
 for col in 1:image_width 
   for row in 1:image_height 
     u = Float32(col / image_width)
-    v = Float32((image_height-row) / image_height) # we start at the lower left
+    v = Float32((image_height-row) / image_height) # we start at the top left
     # ray direction is lower_left_corner + component in x + component in y - origin(reference point)
     # we need to create a vec to store the new direction, as its calculated as a difference in 2 points
     ray = Ray(origin, lower_left_corner + u*horizontal + v*vertical)

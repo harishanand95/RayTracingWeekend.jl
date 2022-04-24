@@ -31,6 +31,11 @@ p2 = Point{Float32}(1.0, 2.0, 4.0)
 p3_ = p1 + p2
 @assert Point{Float32}(2.0, 4.0, 8.0) == p3_
 
+p1 = Point{Float32}(1.0, 2.0, 4.0)
+v2 = Vec{Float32}(1.0, 2.0, 4.0)
+p3_ = p1 + v2
+@assert Point{Float32}(2.0, 4.0, 8.0) == p3_
+
 # test - 
 p1 = Point{Float32}(1.0, 2.0, 4.0)
 p2 = Point{Float32}(1.0,2.0, 4.0)

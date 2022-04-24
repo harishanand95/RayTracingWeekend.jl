@@ -68,9 +68,9 @@ function hit!(object::Sphere, ray::Ray, t_min::Float32, t_max::Float32, rec::Hit
   sqrt_d = sqrt(discriminant)
   root = (-half_b - sqrt_d) / a
 
-  if (root < t_min || t_max < root)
+  if (root < t_min) || (t_max < root)
     root = (-half_b + sqrt_d) / a
-    if (root < t_min || t_max < root)
+    if (root < t_min) || (t_max < root)
       return false
     end
   end

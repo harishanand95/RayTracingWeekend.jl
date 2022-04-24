@@ -6,8 +6,8 @@ include("hittable.jl")
 aspect_ratio      = Float32(16/9)
 image_width       = Int32(400)
 image_height      = Int32(image_width / aspect_ratio)
-samples_per_pixel = Int32(10)
-max_depth         = Int32(500)
+samples_per_pixel = Int32(100)
+max_depth         = Int32(50)
 
 # World
 world = Vector{Hittable}()
@@ -36,9 +36,9 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
   end
 
   rec = get_hit_record()
-  if hit(world, ray, Float32(0.0), typemax(Float32), rec)
+  if hit(world, ray, Float32(0.001), typemax(Float32), rec)
     target = rec.p + rec.normal + random_in_unit_sphere()
-    return 0.5 * (ray_color(Ray(rec.p, to_vec(target - rec.p)), world, Int32(depth-1)))
+    return 0.5 * ray_color(Ray(rec.p, to_vec(target - rec.p)), world, Int32(depth-1))
   end
 
   unit_direction = ray.direction / len(ray.direction)

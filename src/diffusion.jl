@@ -17,13 +17,16 @@ add!(world, Sphere(Point{Float32}(0, -100.5, -1), 100))
 # Camera
 cam = get_camera()
 
-function random_in_unit_sphere() 
+function random_in_unit_sphere(normalized=false) 
   while (true)
     p = random_vector(Float32(-1.0), Float32(1.0))
     if (len_squared(p) >= 1) 
       continue
     end
-    return p
+    if normalized
+      return p / len(p) # actual lambertian case
+    end
+    return p # a hack to get lambertian.
   end
 end
 
@@ -37,7 +40,7 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
 
   rec = get_hit_record()
   if hit(world, ray, Float32(0.001), typemax(Float32), rec)
-    target = rec.p + rec.normal + random_in_unit_sphere()
+    target = rec.p + rec.normal + random_in_unit_sphere(true)
     return 0.5 * ray_color(Ray(rec.p, to_vec(target - rec.p)), world, Int32(depth-1))
   end
 

@@ -1,5 +1,6 @@
 # Based on https://raytracing.github.io/books/RayTracingInOneWeekend.html
 import Base
+using Distributions
 
 # http://www.stochasticlifestyle.com/type-dispatch-design-post-object-oriented-programming-julia/
 # julia follows inheritance by actions than data. Setup the abstract types hierarchy to mean the 
@@ -230,7 +231,7 @@ end
 
 Returns x² + y² + z²
 """
-@inline len_squared(p1::AbstractXYZ) = p1.x^2 + p1.y^2 + p1.z^2
+len_squared(p1::AbstractXYZ) = p1.x^2 + p1.y^2 + p1.z^2
 
 
 """
@@ -271,15 +272,15 @@ p2 = Vec{Float32}(1.0, 2.0, 3.0)
 p3 = p1 × p2
 
 # Convert a point to a vector (subtract from Vec(0.0, 0.0, 0.0))
-@inline to_vec(p::Point) = Vec{}(p.x, p.y, p.z)
+to_vec(p::Point) = Vec{}(p.x, p.y, p.z)
 
 x1 = Point{Int32}(1.0, 2.0, 3.0)
 v1 = to_vec(x1)
 
-@inline to_point(v::Vec) = Point{}(v.x, v.y, v.z)
+to_point(v::Vec) = Point{}(v.x, v.y, v.z)
 
 x1 = to_point(v1)
 
-@inline random_vector() = Vec{Float32}(rand(), rand(), rand())
+random_vector(min, max) = Vec{Float32}(rand(Uniform(min, max)), rand(Uniform(min, max)), rand(Uniform(min, max)))
 
-v1 = random_vector()
+v1 = random_vector(-1.0, 1.0)

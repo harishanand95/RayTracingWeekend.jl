@@ -17,7 +17,7 @@ struct Ray
   direction::Vec
 end
 
-@inline function at(r::Ray, t::Real)
+function at(r::Ray, t::Real)
   Point{}(
     r.origin.x + t * r.direction.x,
     r.origin.y + t * r.direction.y,

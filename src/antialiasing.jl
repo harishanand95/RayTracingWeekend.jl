@@ -7,7 +7,7 @@ include("hittable.jl")
 aspect_ratio = Float32(16/9)
 image_width  = Int32(400)
 image_height = Int32(image_width / aspect_ratio)
-samples_per_pixel = Int64(100)
+samples_per_pixel = Int32(100)
 
 # World
 world = Vector{Hittable}()

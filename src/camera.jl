@@ -36,7 +36,7 @@ function get_ray(camera::Camera, u::Float32, v::Float32)
 end
 
 
-function get_sampled_color(color::RGB, samples_per_pixel::Int)
+function get_sampled_color(color::RGB, samples_per_pixel::Int32)
   scale = 1/samples_per_pixel
-  return RGB(clamp(color.r*scale, 0, 1), clamp(color.g*scale, 0, 1), clamp(color.b*scale, 0, 1))
+  return RGB(clamp(sqrt(color.r*scale), 0, 1), clamp(sqrt(color.g*scale), 0, 1), clamp(sqrt(color.b*scale), 0, 1))
 end

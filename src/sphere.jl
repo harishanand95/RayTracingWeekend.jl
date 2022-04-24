@@ -37,7 +37,7 @@ function hit_sphere(center::Point, radius::Real, ray::Ray)
   if (discriminant < 0)
     return -1.0;
   end
-    return -b - sqrt(discriminant) / (2.0*a);
+  return (-b - sqrt(discriminant)) / (2.0*a)
 end
 
 function ray_color_sphere(r::Ray)

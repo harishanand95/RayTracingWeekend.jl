@@ -2,6 +2,9 @@
 import Base
 
 # http://www.stochasticlifestyle.com/type-dispatch-design-post-object-oriented-programming-julia/
+# julia follows inheritance by actions than data. Setup the abstract types hierarchy to mean the 
+# existence or non-existence of some behavior
+
 abstract type AbstractXYZ{T<:Real} end
 abstract type AbstractPoint <: AbstractXYZ{Real} end
 abstract type AbstractVec <: AbstractXYZ{Real} end
@@ -39,7 +42,7 @@ x = Vec{Float64}(1.0, 2.0, 3.0)
 print(x)
 
 """
-function Base.print(p::AbstractXYZ)
+function Base.print(p::AbstractXYZ) # Harish: writing the action outcome based on type details, will let compiler do optimizations!
   if typeof(p) <: AbstractPoint
     println("Point($(p.x), $(p.y), $(p.z))")
   elseif typeof(p) <: AbstractVec
@@ -63,8 +66,8 @@ print(x)
 Return a negative value of the given XYZ (Point, Vec).
 """
 function Base.:-(p::AbstractXYZ)
-  if typeof(p) <: AbstractPoint
-    return Point{}(-p.x, -p.y, -p.z)
+  if typeof(p) <: AbstractPoint # the actions associated with Point is different from vec
+    return Point{}(-p.x, -p.y, -p.z) 
   elseif typeof(p) <: AbstractVec
     return Vec{}(-p.x, -p.y, -p.z)
   elseif typeof(p) <: AbstractXYZ
@@ -228,6 +231,7 @@ end
 Returns x² + y² + z²
 """
 len_squared(p1::AbstractXYZ) = p1.x^2 + p1.y^2 + p1.z^2
+
 
 """
     len(p1::AbstractXYZ) -> Real

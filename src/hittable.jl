@@ -19,13 +19,7 @@ end
 """
     Create a HitRecord object with all zeros.
 """
-function get_hit_record()
-  p = Point{Float32}(0.0, 0.0, 0.0)
-  n = Vec{Float32}(0.0, 0.0, 0.0)
-  t = Float32(0.0)
-  f = false
-  return HitRecord(p, n, t, f)
-end
+@inline get_hit_record() = HitRecord(Point{Float32}(0.0, 0.0, 0.0), Vec{Float32}(0.0, 0.0, 0.0), Float32(0.0), false)
 
 
 """
@@ -109,14 +103,8 @@ function hit(objects::Vector{<:Hittable}, ray::Ray, t_min::Float32, t_max::Float
 end
 
 
-function add!(list::Vector{<:Hittable}, object)
-  push!(list, object)
-end
-
-
-function clear!(list::Vector{<:Hittable})
-  empty!(list)
-end
+@inline add!(list::Vector{<:Hittable}, object) = push!(list, object)
+@inline clear!(list::Vector{<:Hittable}) = empty!(list)
 
 # tests
 world = Vector{Hittable}()

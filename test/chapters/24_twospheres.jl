@@ -58,4 +58,4 @@ for col in 1:image_width
   end
 end
 
-save("imgs/24_twosphere.png", img)
+save("imgs/24_twospheres.png", img)

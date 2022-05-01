@@ -12,4 +12,5 @@ for col in 1:width
     img[row, col] = pixel_color(Point(col/256, (256-row)/256, 0.25))
   end
 end
-img
+
+save("imgs/01_imagegradient.png", img)

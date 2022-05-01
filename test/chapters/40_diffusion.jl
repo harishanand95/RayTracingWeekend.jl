@@ -69,4 +69,5 @@ function render()
 end
 
 @time render()
-img
+
+save("imgs/40_diffusion.png", img)

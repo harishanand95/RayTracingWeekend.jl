@@ -2,6 +2,7 @@ using Images, ImageView
 using RayTracingWeekend
 
 import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
+
 # Camera geometry
 # (0,0,0) is the origin of the Camera
 # positive x-axis is (right-side) width 
@@ -26,27 +27,37 @@ vertical          = Vec{Float32}(0, viewport_height, 0) # veritcal direction
 shift_in_z_axis   = Vec{Float32}(0.0, 0.0, -focal_length)
 lower_left_corner = shift_in_z_axis - horizontal/2 - vertical/2
 
-# World
-world = Vector{Hittable}()
-add!(world, Sphere(Point{Float32}(0, 0, -1), 0.5))
-add!(world, Sphere(Point{Float32}(0, -100.5, -1), 100))
 
-
-function ray_color(ray::Ray, world::Vector{<:Hittable})
-  rec = HitRecord()
-  if hit(world, ray, Float32(0.0), typemax(Float32), rec)
-    return 0.5 * RGB(rec.normal.x+1, rec.normal.y+1, rec.normal.z+1)
+# Create a sphere 
+function hit_sphere(center::Point, radius::Real, ray::Ray)
+  oc = to_vec(ray.origin - center)
+  a = ray.direction ⋅ ray.direction
+  b = 2.0 * (oc ⋅ ray.direction)
+  c = (oc ⋅ oc) - (radius*radius)
+  discriminant = b*b - 4.0*a*c
+  if (discriminant < 0)
+    return -1.0;
+  else
+    return (-b - sqrt(discriminant)) / (2.0*a)
   end
-
-  unit_direction = ray.direction / len(ray.direction)
-  t = 0.5*(unit_direction.y + 1.0)
-  return (1.0-t)*RGB(1.0, 1.0, 1.0) + t*RGB(0.5, 0.7, 1.0)
 end
 
 
+# Normal map color
+function ray_color_sphere_normal(r::Ray)
+  t = hit_sphere(Point(0.0, 0.0, -1.0), 0.5, r)
+  if t > 0.0 
+    surface_normal = to_vec(at(r, t)) - Vec{Float32}(0.0, 0.0, -1.0)
+    N = surface_normal / len(surface_normal) # normalized
+    return 0.5*RGB(N.x+1, N.y+1, N.z+1)
+  else
+    sky_color(r) # sky color 
+  end
+end
+
 img = rand(RGB{Float32}, image_height, image_width)
 
-# col-major
+# col-major, u is col, v is row
 for col in 1:image_width 
   for row in 1:image_height 
     u = Float32(col / image_width)
@@ -54,8 +65,8 @@ for col in 1:image_width
     # ray direction is lower_left_corner + component in x + component in y - origin(reference point)
     # we need to create a vec to store the new direction, as its calculated as a difference in 2 points
     ray = Ray(origin, lower_left_corner + u*horizontal + v*vertical)
-    img[row, col] = ray_color(ray, world)
+    img[row, col] = ray_color_sphere_normal(ray)
   end
 end
 
-img
+save("imgs/11_spherenormal.png", img)

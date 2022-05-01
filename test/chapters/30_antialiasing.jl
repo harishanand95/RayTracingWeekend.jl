@@ -48,4 +48,5 @@ function render()
 end
 
 @time render()
-img
+
+save("imgs/30_antialiasing.png", img)

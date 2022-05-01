@@ -1,13 +1,13 @@
-using Images, ImageView, BenchmarkTools
+using Images, ImageView
+using RayTracingWeekend
 
-include("camera.jl")
-include("hittable.jl")
+import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
 
 # Image
 aspect_ratio = Float32(16/9)
 image_width  = Int32(400)
 image_height = Int32(image_width / aspect_ratio)
-samples_per_pixel = Int32(100)
+samples_per_pixel = Int32(10)
 
 # World
 world = Vector{Hittable}()
@@ -19,7 +19,7 @@ cam = get_camera()
 
 # Ray color
 function ray_color(ray::Ray, world::Vector{<:Hittable})
-  rec = get_hit_record()
+  rec = HitRecord()
   if hit(world, ray, Float32(0.0), typemax(Float32), rec)
     return 0.5 * RGB(rec.normal.x+1, rec.normal.y+1, rec.normal.z+1)
   end
@@ -47,5 +47,5 @@ function render()
   end
 end
 
-@btime render()
+@time render()
 img

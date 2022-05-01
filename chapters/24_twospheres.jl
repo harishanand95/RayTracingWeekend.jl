@@ -1,7 +1,7 @@
 using Images, ImageView
-include("hittable.jl")
-include("ray.jl")
+using RayTracingWeekend
 
+import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
 # Camera geometry
 # (0,0,0) is the origin of the Camera
 # positive x-axis is (right-side) width 
@@ -33,7 +33,7 @@ add!(world, Sphere(Point{Float32}(0, -100.5, -1), 100))
 
 
 function ray_color(ray::Ray, world::Vector{<:Hittable})
-  rec = get_hit_record()
+  rec = HitRecord()
   if hit(world, ray, Float32(0.0), typemax(Float32), rec)
     return 0.5 * RGB(rec.normal.x+1, rec.normal.y+1, rec.normal.z+1)
   end

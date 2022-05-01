@@ -1,8 +1,4 @@
-include("xyz.jl")
-include("ray.jl")
-
 # HitRecord stores point where ray hits, "t", surface normal and if its front_face or not.
-
 """
     Stores information on the point of impact for a ray.
     This includes where ray hits, "t" in o+d(t), surface normal 
@@ -13,13 +9,13 @@ mutable struct HitRecord
   normal::Vec{<:Real}
   t::Float32
   front_face::Bool
+
+  HitRecord(;
+    p=Point{Float32}(0.0, 0.0, 0.0), 
+    normal=Vec{Float32}(0.0, 0.0, 0.0), 
+    t=Float32(0.0), 
+    front_face=false) = new(p, normal, t, front_face) # constructor
 end
-
-
-"""
-    Create a HitRecord object with all zeros.
-"""
-get_hit_record() = HitRecord(Point{Float32}(0.0, 0.0, 0.0), Vec{Float32}(0.0, 0.0, 0.0), Float32(0.0), false)
 
 
 """
@@ -52,8 +48,9 @@ end
 
 
 """
-    Ray hit function for sphere, calculates the impact location, normal etc in `rec`
-    for the `ray` on `object`.
+    Ray hit! function for sphere, calculates the impact location, normal etc on HitRecord `rec`
+    for the `ray`. 
+    - This function will update values on rec on a successful hit.
 """
 function hit!(object::Sphere, ray::Ray, t_min::Float32, t_max::Float32, rec::HitRecord)
   oc = to_vec(ray.origin - object.center)
@@ -85,10 +82,10 @@ end
 
 
 """
-  Apply ray hit! on all the `objects` in the scene. 
+  Apply ray hit on all the `objects` in the scene. 
 """
 function hit(objects::Vector{<:Hittable}, ray::Ray, t_min::Float32, t_max::Float32, rec::HitRecord)
-  temp = get_hit_record()
+  temp = HitRecord()
   hit_anything=false
   closest_so_far = t_max
 
@@ -105,13 +102,3 @@ end
 
 add!(list::Vector{<:Hittable}, object) = push!(list, object)
 clear!(list::Vector{<:Hittable}) = empty!(list)
-
-# tests
-world = Vector{Hittable}()
-add!(world, Sphere(Point{Float32}(0, 0, -1), 0.5))
-add!(world, Sphere(Point{Float32}(0, 0, -1), 0.5))
-
-@assert size(world) == (2,) # ask claforte how to compare with 2 directly?
-clear!(world)
-add!(world, Sphere(Point{Float32}(0, 0, -1), 0.5))
-@assert size(world) == (1,)

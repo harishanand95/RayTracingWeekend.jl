@@ -1,4 +1,18 @@
+name = "RayTracingWeekend"
+uuid = "b84f8e99-0a05-4e26-b7e6-db0e77d4ccdb"
+authors = ["Harish Anand"]
+version = "0.1.0"
+
 [deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 ImageView = "86fae568-95e7-573e-a6b2-d8a6b900c9ef"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
-ReusePatterns = "a39b5e78-89b5-562b-97d8-70689129df0c"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]

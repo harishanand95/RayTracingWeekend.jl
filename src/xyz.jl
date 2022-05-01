@@ -53,14 +53,6 @@ function Base.print(p::AbstractXYZ) # Harish: writing the action outcome based o
   end
 end
 
-x = XYZ{Float64}(1.0, 2.0, 3.0)
-print(x)
-
-x = Point{Float64}(1.0, 2.0, 3.0)
-print(x)
-
-x = Vec{Float64}(1.0, 2.0, 3.0)
-print(x)
 
 """
     - p::XYZ -> -p::XYZ
@@ -75,27 +67,6 @@ function Base.:-(p::AbstractXYZ)
     return XYZ{}(-p.x, -p.y, -p.z)
   end
 end
-
-x = XYZ{Float64}(1.0, 2.0, 3.0)
-neg_x = -x
-x = Point{Float64}(1.0, 2.0, 3.0)
-neg_x = -x
-x = Vec{Float64}(1.0, 2.0, 3.0)
-neg_x = -x
-
-x = XYZ{Float32}(1.0, 2.0, 3.0)
-neg_x = -x
-x = Point{Float32}(1.0, 2.0, 3.0)
-neg_x = -x
-x = Vec{Float32}(1.0, 2.0, 3.0)
-neg_x = -x
-
-x = XYZ{Int32}(1.0, 2.0, 3.0)
-neg_x = -x
-x = Point{Int32}(1.0, 2.0, 3.0)
-neg_x = -x
-x = Vec{Int32}(1.0, 2.0, 3.0)
-neg_x = -x
 
 
 """
@@ -138,10 +109,6 @@ function Base.:*(p::AbstractXYZ, r::Real)
 end
 
 Base.:*(r::Real, p::AbstractXYZ) = p * r
-
-x = Vec{Int32}(1.0, 2.0, 3.0)
-x_2 = x * 2
-x_2 = 2 * x
 
 
 """
@@ -267,20 +234,12 @@ function (×)(u::AbstractVec, v::AbstractVec)
   return Vec{}((u.y * v.z) - (u.z * v.y), (u.z * v.x) - (u.x * v.z), (u.x * v.y) - (u.y * v.x))
 end
 
-p1 = Vec{Float32}(1.0, 2.0, 3.0)
-p2 = Vec{Float32}(1.0, 2.0, 3.0)
-p3 = p1 × p2
 
-# Convert a point to a vector (subtract from Vec(0.0, 0.0, 0.0))
+""" Convert a point to a vector (subtract from Vec(0.0, 0.0, 0.0)) """
 to_vec(p::Point) = Vec{}(p.x, p.y, p.z)
 
-x1 = Point{Int32}(1.0, 2.0, 3.0)
-v1 = to_vec(x1)
-
+""" Convert a vec to a point """
 to_point(v::Vec) = Point{}(v.x, v.y, v.z)
 
-x1 = to_point(v1)
-
+""" random vector with values between min and max"""
 random_vector(min, max) = Vec{Float32}(rand(Uniform(min, max)), rand(Uniform(min, max)), rand(Uniform(min, max)))
-
-v1 = random_vector(-1.0, 1.0)

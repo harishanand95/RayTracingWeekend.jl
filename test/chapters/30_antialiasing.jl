@@ -7,7 +7,7 @@ import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
 aspect_ratio = Float32(16/9)
 image_width  = Int32(400)
 image_height = Int32(image_width / aspect_ratio)
-samples_per_pixel = Int32(10)
+samples_per_pixel = Int32(100)
 
 # World
 world = Vector{Hittable}()
@@ -47,6 +47,6 @@ function render()
   end
 end
 
-@time render()
+@time render() # 9.802 s
 
 save("imgs/30_antialiasing.png", img)

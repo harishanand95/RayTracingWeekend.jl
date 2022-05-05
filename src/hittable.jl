@@ -23,10 +23,10 @@ end
     Equivalent of copy constructor in C++. (Harish: maybe slow?)
 """
 function set_hit_record(source::HitRecord, destination::HitRecord)
-  destination.p = source.p
-  destination.normal = source.normal
-  destination.t = source.t
-  destination.front_face = source.front_face
+  setfield!(destination, :p, getfield(source, :p))
+  setfield!(destination, :normal, getfield(source, :normal))
+  setfield!(destination, :t, getfield(source, :t))
+  setfield!(destination, :front_face, getfield(source, :front_face))
 end 
 
 
@@ -34,8 +34,8 @@ end
     Sets the face normal to pointing outwards on the impact location of the object.
 """
 function set_face_normal(record::HitRecord, r::Ray, outward_normal::Vec)
-  record.front_face = (r.direction ⋅ outward_normal) < 0
-  record.normal = record.front_face ? outward_normal : -outward_normal
+  setfield!(record, :front_face, (r.direction ⋅ outward_normal) < 0)
+  setfield!(record, :normal, record.front_face ? outward_normal : -outward_normal)
 end
 
 
@@ -72,8 +72,8 @@ function hit!(object::Sphere, ray::Ray, t_min::Float32, t_max::Float32, rec::Hit
     end
   end
 
-  rec.t = root
-  rec.p = at(ray, rec.t)
+  setfield!(rec, :t, root)
+  setfield!(rec, :p, at(ray, rec.t))
   outward_normal = to_vec(rec.p - object.center) / object.radius
   set_face_normal(rec, ray, outward_normal)
 

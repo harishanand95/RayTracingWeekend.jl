@@ -19,7 +19,7 @@ cam = get_camera()
 
 # Ray color
 function ray_color(ray::Ray, world::Vector{<:Hittable})
-  rec = HitRecord()
+  rec = get_hit_record()
   if hit(world, ray, Float32(0.0), typemax(Float32), rec)
     return 0.5 * RGB(rec.normal.x+1, rec.normal.y+1, rec.normal.z+1)
   end

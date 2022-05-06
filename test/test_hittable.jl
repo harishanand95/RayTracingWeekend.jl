@@ -4,7 +4,7 @@ using Test
 
 @testset "Tests: hittable.jl" begin
     @testset "HitRecord types" begin
-        hr = HitRecord()
+        hr = get_hit_record()
         @test hr.p == Point{Float32}(0.0, 0.0, 0.0)
         @test hr.normal == Vec{Float32}(0.0, 0.0, 0.0)
         @test hr.t == Float32(0.0)

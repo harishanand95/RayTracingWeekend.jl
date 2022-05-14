@@ -10,7 +10,11 @@ export
     HitRecord,
     Hittable,
     Sphere,
-
+    Material,
+    Lambertian,
+    Metal,
+    HitRecord2,
+    Sphere2,
 # Functions
     len,
     len_squared,
@@ -18,6 +22,7 @@ export
     to_point,
     random_vector,
     degrees_to_radians,
+    random_in_unit_sphere,
     at,
     pixel_color,
     sky_color,
@@ -30,7 +35,8 @@ export
     hit,
     add!,
     clear!,
-
+    scatter,
+    get_hit_record,
 # Operators
     ×,
     ⋅,
@@ -43,6 +49,7 @@ include("utils.jl")
 include("ray.jl")
 include("render.jl")
 include("camera.jl")
+include("material.jl")
 include("hittable.jl")
 
 end

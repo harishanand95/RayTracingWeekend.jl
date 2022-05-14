@@ -7,13 +7,23 @@ import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
 aspect_ratio      = Float32(16/9)
 image_width       = Int32(400)
 image_height      = Int32(image_width / aspect_ratio)
-samples_per_pixel = Int32(50)
-max_depth         = Int32(100)
+samples_per_pixel = Int32(100)
+max_depth         = Int32(50)
 
 # World
 world = Vector{Hittable}()
-add!(world, Sphere(Point{Float32}(0, 0, -1), 0.5))
-add!(world, Sphere(Point{Float32}(0, -100.5, -1), 100))
+
+# Materials
+material_ground = Lambertian(RGB(0.8, 0.8, 0.0))
+material_center = Lambertian(RGB(0.7, 0.3, 0.3))
+material_left   = Metal(RGB(0.8, 0.8, 0.8), Float32(0.5))
+material_right  = Metal(RGB(0.8, 0.6, 0.2), Float32(1.0))
+
+add!(world, Sphere2(Point{Float32}(0.0, -100.5, -1.0), 100.0, material_ground))
+add!(world, Sphere2(Point{Float32}(0.0, 0.0, -1.0), 0.5, material_center))
+add!(world, Sphere2(Point{Float32}(-1.0, 0.0, -1.0), 0.5, material_left))
+add!(world, Sphere2(Point{Float32}(1.0, 0.0, -1.0), 0.5, material_right))
+
 
 # Camera
 cam = get_camera()
@@ -26,10 +36,14 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
     return RGB(0,0,0)
   end
 
-  rec = get_hit_record()
+  rec = get_hit_record(Metal(0.0, 0.0))
   if hit(world, ray, Float32(0.001), typemax(Float32), rec)
-    target = rec.p + rec.normal + random_in_unit_sphere(true)
-    return 0.5 * ray_color(Ray(rec.p, to_vec(target - rec.p)), world, Int32(depth-1))
+    result, attenuation, scattered = scatter(rec.material, ray, rec)
+    if result
+      r_color = ray_color(scattered, world, Int32(depth-1))
+      return RGB(attenuation.r*r_color.r, attenuation.g*r_color.g, attenuation.b*r_color.b)
+    end
+    return RGB(0,0,0)
   end
 
   unit_direction = ray.direction / len(ray.direction)
@@ -56,6 +70,5 @@ function render()
 end
 
 @time render()  # 7.794 s
-
-save("imgs/40_diffusion.png", img)
 img
+# save("imgs/40_diffusion.png", img)

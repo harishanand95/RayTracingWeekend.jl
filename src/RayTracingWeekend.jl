@@ -4,7 +4,6 @@ export
 # Types
     Point,
     Vec,
-    XYZ,
     Ray,
     Camera,
     HitRecord,

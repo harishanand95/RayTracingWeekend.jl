@@ -4,8 +4,8 @@
     and where the impact was like the front side or back side.
 """
 mutable struct HitRecord
-  p::Point{<:Real} 
-  normal::Vec{<:Real}
+  p::Point{Float32} 
+  normal::Vec{Float32}
   t::Float32
   front_face::Bool
 end
@@ -13,7 +13,7 @@ end
 """
     Get a HitRecord object with default values.
 """
-function get_hit_record()
+@inline function get_hit_record()
   HitRecord(Point{Float32}(0.0, 0.0, 0.0), Vec{Float32}(0.0, 0.0, 0.0), Float32(0.0), false)
 end
 
@@ -21,7 +21,7 @@ end
 """
     Set HitRecord `rec` to the arguments passed.
 """
-function set_hit_record(rec::HitRecord, p::Point, normal::Vec, t::Float32, front_face::Bool)
+@inline function set_hit_record(rec::HitRecord, p::Point, normal::Vec, t::Float32, front_face::Bool)
   setfield!(rec, :t, t)
   setfield!(rec, :p, p)
   setfield!(rec, :normal, normal)
@@ -33,7 +33,7 @@ end
     Set the source HitRecord to be same as the destination HitRecord.
     Equivalent of copy constructor in C++. (Harish: maybe slow?)
 """
-function set_hit_record(source::HitRecord, destination::HitRecord)
+@inline function set_hit_record(source::HitRecord, destination::HitRecord)
   setfield!(destination, :p, getfield(source, :p))
   setfield!(destination, :normal, getfield(source, :normal))
   setfield!(destination, :t, getfield(source, :t))
@@ -43,8 +43,8 @@ end
 
 """ HitRecord2 stores material inaddition to details present in HitRecord. """
 mutable struct HitRecord2
-  p::Point{<:Real} 
-  normal::Vec{<:Real}
+  p::Point{Float32} 
+  normal::Vec{Float32}
   t::Float32
   front_face::Bool
   material::Material # a constructor cannot be defined as its a abstract type here
@@ -54,13 +54,13 @@ end
 """
     Get a HitRecord2 object with default values, and a given material (since material is abstract).
 """
-function get_hit_record(material::Material)
+@inline function get_hit_record(material::Material)
   HitRecord2(Point{Float32}(0.0, 0.0, 0.0), Vec{Float32}(0.0, 0.0, 0.0), Float32(0.0), false, material)
 end
 
 
 """ set_hit_record sets fields inside HitRecord2 `rec` to the arguments passed"""
-function set_hit_record(rec::HitRecord2, p::Point, normal::Vec, t::Float32, front_face::Bool, material::Material)
+@inline function set_hit_record(rec::HitRecord2, p::Point, normal::Vec, t::Float32, front_face::Bool, material::Material)
   setfield!(rec, :t, t)
   setfield!(rec, :p, p)
   setfield!(rec, :normal, normal)
@@ -73,7 +73,7 @@ end
     Set the source HitRecord2 to be same as the destination HitRecord2.
     Equivalent of copy constructor in C++. (Harish: maybe slow?)
 """
-function set_hit_record(source::HitRecord2, destination::HitRecord2)
+@inline function set_hit_record(source::HitRecord2, destination::HitRecord2)
   setfield!(destination, :p, getfield(source, :p))
   setfield!(destination, :normal, getfield(source, :normal))
   setfield!(destination, :t, getfield(source, :t))
@@ -107,24 +107,26 @@ end
 function hit!(object::Union{Sphere, Sphere2}, ray::Ray, t_min::Float32, t_max::Float32, rec::Union{HitRecord, HitRecord2})
   oc = to_vec(ray.origin - object.center)
   a = ray.direction ⋅ ray.direction
-  half_b = oc ⋅ ray.direction
+  b = 2.0 * (oc ⋅ ray.direction)
   c = (oc ⋅ oc) - (object.radius*object.radius)
-  discriminant = (half_b*half_b) - (a*c)
+  discriminant = (b*b) - (4.0*a*c)
+  
   if (discriminant < 0) 
     return false
   end
   
-  sqrt_d = sqrt(discriminant)
-  root = (-half_b - sqrt_d) / a
+  root = Float32((-b - sqrt(discriminant)) / (2.0*a))
 
   if (root < t_min) || (t_max < root)
-    root = (-half_b + sqrt_d) / a
+    root = Float32((-b + sqrt(discriminant)) / (2.0*a))
     if (root < t_min) || (t_max < root)
       return false
     end
   end
+
   setfield!(rec, :t, root)
   setfield!(rec, :p, at(ray, rec.t))
+  
   outward_normal = to_vec(rec.p - object.center) / object.radius
   front_face = (ray.direction ⋅ outward_normal) < 0
   normal = front_face ? outward_normal : -outward_normal
@@ -134,6 +136,7 @@ function hit!(object::Union{Sphere, Sphere2}, ray::Ray, t_min::Float32, t_max::F
   else
     set_hit_record(rec, at(ray, rec.t), normal, root, front_face)
   end
+
   return true
 end
 

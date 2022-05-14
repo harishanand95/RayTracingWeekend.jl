@@ -69,5 +69,5 @@ function render()
   img
 end
 
-@btime render()  # 7.794 s
+@btime render()  # 4.748 s
 save("imgs/50_metal.png", render())

@@ -31,7 +31,7 @@ end
 
 
 """ `get_sampled_color` applies gamma correction and scales the pixel color by the number of samples taken."""
-function get_sampled_color(color::RGB, samples_per_pixel::Int32)
+function get_sampled_color(color::RGB{Float32}, samples_per_pixel::Int32)
   scale = 1/samples_per_pixel
   return RGB{Float32}(clamp(sqrt(color.r*scale), 0, 1), clamp(sqrt(color.g*scale), 0, 1), clamp(sqrt(color.b*scale), 0, 1))
 end

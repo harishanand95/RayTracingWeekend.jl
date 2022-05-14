@@ -1,29 +1,13 @@
-using Images, ImageView
+using Images, ImageView, BenchmarkTools
 using RayTracingWeekend
-
 import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
-
-# Image
-aspect_ratio      = Float32(16/9)
-image_width       = Int32(400)
-image_height      = Int32(image_width / aspect_ratio)
-samples_per_pixel = Int32(50)
-max_depth         = Int32(100)
-
-# World
-world = Vector{Hittable}()
-add!(world, Sphere(Point{Float32}(0, 0, -1), 0.5))
-add!(world, Sphere(Point{Float32}(0, -100.5, -1), 100))
-
-# Camera
-cam = get_camera()
 
 
 # Ray color with recursion depth
 function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
   # If we've exceeded the ray bounce limit, no more light is gathered.
   if (depth <= 0)
-    return RGB(0,0,0)
+    return RGB{Float32}(0,0,0)
   end
 
   rec = get_hit_record()
@@ -34,12 +18,28 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
 
   unit_direction = ray.direction / len(ray.direction)
   t = 0.5*(unit_direction.y + 1.0)
-  return (1.0-t)*RGB(1.0, 1.0, 1.0) + t*RGB(0.5, 0.7, 1.0)
+  return (1.0f0-t)*RGB{Float32}(1.0, 1.0, 1.0) + t*RGB{Float32}(0.5, 0.7, 1.0)
 end
 
-img = rand(RGB{Float32}, image_height, image_width)
 
 function render()
+  # Image
+  aspect_ratio      = Float32(16/9)
+  image_width       = Int32(400)
+  image_height      = Int32(image_width / aspect_ratio)
+  samples_per_pixel = Int32(50)
+  max_depth         = Int32(100)
+
+  # World
+  world = Vector{Hittable}()
+  add!(world, Sphere(Point{Float32}(0, 0, -1), 0.5))
+  add!(world, Sphere(Point{Float32}(0, -100.5, -1), 100))
+
+  # Camera
+  cam = get_camera()
+
+  img = rand(RGB{Float32}, image_height, image_width)
+
   # col-major
   for col in 1:image_width 
     for row in 1:image_height 
@@ -53,9 +53,9 @@ function render()
       img[row, col] = get_sampled_color(pixel, samples_per_pixel)
     end
   end
+  img
 end
 
-@time render()  # 7.794 s
+@btime render()  # old 7.794 s new 877.453 ms
 
-save("imgs/40_diffusion.png", img)
-img
+save("imgs/40_diffusion.png", render())

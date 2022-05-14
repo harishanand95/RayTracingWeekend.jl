@@ -24,7 +24,7 @@ function ray_color_sphere_normal(r::Ray)
   if t > 0.0 
     surface_normal = to_vec(at(r, t)) - Vec{Float32}(0.0, 0.0, -1.0)
     N = surface_normal / len(surface_normal) # normalized
-    return 0.5*RGB(N.x+1, N.y+1, N.z+1)
+    return 0.5*RGB{Float32}(N.x+1, N.y+1, N.z+1)
   else
     sky_color(r) # sky color 
   end

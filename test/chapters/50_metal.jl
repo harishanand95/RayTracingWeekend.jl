@@ -16,8 +16,8 @@ world = Vector{Hittable}()
 # Materials
 material_ground = Lambertian(RGB(0.8, 0.8, 0.0))
 material_center = Lambertian(RGB(0.7, 0.3, 0.3))
-material_left   = Metal(RGB(0.8, 0.8, 0.8))
-material_right  = Metal(RGB(0.8, 0.6, 0.2))
+material_left   = Metal(RGB(0.8, 0.8, 0.8), Float32(0.5))
+material_right  = Metal(RGB(0.8, 0.6, 0.2), Float32(1.0))
 
 add!(world, Sphere2(Point{Float32}(0.0, -100.5, -1.0), 100.0, material_ground))
 add!(world, Sphere2(Point{Float32}(0.0, 0.0, -1.0), 0.5, material_center))
@@ -36,7 +36,7 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
     return RGB(0,0,0)
   end
 
-  rec = get_hit_record(Metal(0.0))
+  rec = get_hit_record(Metal(0.0, 0.0))
   if hit(world, ray, Float32(0.001), typemax(Float32), rec)
     result, attenuation, scattered = scatter(rec.material, ray, rec)
     if result

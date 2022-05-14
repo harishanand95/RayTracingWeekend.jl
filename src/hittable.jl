@@ -143,7 +143,7 @@ end
 """
 function hit(objects::Vector{<:Hittable}, ray::Ray, t_min::Float32, t_max::Float32, rec::Union{HitRecord, HitRecord2})
   if typeof(rec) == HitRecord2
-    temp = get_hit_record(Metal(0.0))
+    temp = get_hit_record(Metal(0.0, 0.0))
   else
     temp = get_hit_record()
   end

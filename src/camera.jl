@@ -35,3 +35,24 @@ function get_sampled_color(color::RGB{Float32}, samples_per_pixel::Int32)
   scale = 1/samples_per_pixel
   return RGB{Float32}(clamp(sqrt(color.r*scale), 0, 1), clamp(sqrt(color.g*scale), 0, 1), clamp(sqrt(color.b*scale), 0, 1))
 end
+
+
+# On https://raytracing.github.io/books/RayTracingInOneWeekend.html#positionablecamera
+# We define a new set of functions for camera, that can take vertical field of view
+
+"""
+Create a camera object from aspect_ratio, viewport_height and focal_length
+"""
+function get_camera(vfov::Float32, aspect_ratio::Float32) # vertical field-of-view in degrees
+  θ = degrees_to_radians(vfov)
+  h = tan(θ/2)
+  viewport_height = 2.0f0 * h
+  viewport_width = aspect_ratio * viewport_height
+  
+  focal_length      = 1.0f0
+  origin            = Point{Float32}(0, 0, 0)
+  horizontal        = Vec{Float32}(viewport_width, 0, 0) # h direction
+  vertical          = Vec{Float32}(0, viewport_height, 0) # v direction
+  lower_left_corner = origin - (horizontal/2 + vertical/2 + Vec{Float32}(0.0, 0.0, focal_length))
+  return Camera(origin, lower_left_corner, horizontal, vertical)
+end

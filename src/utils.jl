@@ -1,7 +1,7 @@
 const PI = 3.1415926535897932385
 
 function degrees_to_radians(degrees)
-  return degrees * pi / 180.0;
+  return Float32(degrees * pi / 180.0f0);
 end
 
 function random_in_unit_sphere(normalized=false) 

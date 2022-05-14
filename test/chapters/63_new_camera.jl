@@ -36,22 +36,18 @@ function render()
   max_depth         = Int32(50)
 
   # World
+  R = Float32(cos(pi/4)) # converting to float32, to avoid default Float64
   world = Vector{Hittable}()
 
   # Materials
-  material_ground = Lambertian(RGB{Float32}(0.8, 0.8, 0.0))
-  material_center = Lambertian(RGB{Float32}(0.1, 0.2, 0.5)) # set defaults to white color
-  material_left   = Dielectric(RGB{Float32}(1.0, 1.0, 1.0), 1.5) # set defaults to white color
-  material_right  = Metal(RGB{Float32}(0.8, 0.6, 0.2), Float32(1.0))
+  material_left = Lambertian(RGB{Float32}(0.0, 0.0, 1.0))
+  material_right = Lambertian(RGB{Float32}(1.0, 0.0, 0.0))
 
-  add!(world, Sphere2(Point{Float32}(0.0, -100.5, -1.0), 100.0, material_ground))
-  add!(world, Sphere2(Point{Float32}(0.0, 0.0, -1.0), 0.5, material_center))
-  add!(world, Sphere2(Point{Float32}(-1.0, 0.0, -1.0), 0.5, material_left))
-  add!(world, Sphere2(Point{Float32}(-1.0, 0.0, -1.0), -0.4, material_left))
-  add!(world, Sphere2(Point{Float32}(1.0, 0.0, -1.0), 0.5, material_right))
+  add!(world, Sphere2(Point{Float32}(-R, 0.0, -1.0), R, material_left))
+  add!(world, Sphere2(Point{Float32}(R, 0.0, -1.0), R, material_right))
 
   # Camera
-  cam = get_camera()
+  cam = get_camera(90.0f0, aspect_ratio)
 
   img = rand(RGB{Float32}, image_height, image_width)
   # col-major
@@ -70,5 +66,6 @@ function render()
   img
 end
 
-@btime render()  # 4.748 s
-save("imgs/60_dielectrics.png", render())
+print(@__FILE__)
+@btime render()  # 2.079 s (137302156 allocations: 3.58 GiB)
+save("imgs/63_new_camera.png", render())

@@ -23,7 +23,7 @@ end
 
 # calculate norm and length_squared for a point
 """
-    len_squared(p1::XYZ) -> Real
+    len_squared(p1::Union{Point, Vec}) -> Real
 
 Returns x² + y² + z²
 """
@@ -31,7 +31,7 @@ len_squared(p1::Union{Point, Vec}) = Float32(p1.x^2 + p1.y^2 + p1.z^2)
 
 
 """
-    len(p1::AbstractXYZ) -> Real
+    len(p1::Union{Point, Vec}) -> Real
 
 Returns the √(x² + y² + z²)
 """
@@ -40,7 +40,7 @@ len(p1::Union{Point, Vec}) = √(len_squared(p1))
 
 # Dot product
 """
-    p1::AbstractVec ⋅ p2::AbstractVec -> Float32
+    p1::Vec ⋅ p2::Vec -> Float32
 Returns the result of dot product of 2 Vec
 
 x1 = Vec{Int32}(1.0, 2.0, 3.0)
@@ -55,7 +55,7 @@ end
 
 # Cross product
 """
-    p1::AbstractVec × p2::AbstractVec -> ::AbstractVec
+    p1::Vec × p2::Vec -> ::Vec
 
     Cross product of 2 vectors, return a new vector
 """

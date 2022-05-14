@@ -4,7 +4,7 @@ using RayTracingWeekend
 using Test
 
 @testset "Tests: xyz.jl" begin
-    @testset "Point Vec XYZ types" begin
+    @testset "Point Vec types" begin
         p = Point{Float32}(1.0, 2.0, 3.0)
         minus_p = Point{Float32}(-1.0, -2.0, -3.0)
         @test minus_p == -p

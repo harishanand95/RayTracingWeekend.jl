@@ -78,3 +78,53 @@ function get_camera(lookfrom::Point{Float32}, lookat::Point{Float32}, vup::Vec{F
   lower_left_corner = origin - horizontal/2 - vertical/2 - w;
   return Camera(origin, lower_left_corner, horizontal, vertical)
 end
+
+
+struct Camera2
+  origin::Point{Float32}
+  lower_left_corner::Point{Float32}
+  horizontal::Vec{Float32}
+  vertical::Vec{Float32}
+  u::Vec{Float32}
+  v::Vec{Float32}
+  w::Vec{Float32}
+  lens_radius::Float32
+end
+
+
+"""
+  Get a Camera2 object that is looking from `lookfrom` and looking at `lookat`.
+  Additionally `vup` viewup is provided to allow for rotations.
+  The camera can do defocus blur, by generating random scene rays 
+  originating from inside a disk centered at the lookfrom point.
+
+"""
+function get_camera(
+  lookfrom::Point{Float32}, lookat::Point{Float32}, vup::Vec{Float32}, 
+  vfov::Float32, aspect_ratio::Float32, aperture::Float32, focus_dist::Float32)
+
+  θ = degrees_to_radians(vfov)
+  h = tan(θ/2)
+  viewport_height = 2.0f0 * h
+  viewport_width = aspect_ratio * viewport_height
+
+  w = unit_vector(to_vec(lookfrom - lookat))
+  u = unit_vector(vup × w)
+  v = w × u
+
+  origin = lookfrom;
+  horizontal = focus_dist * viewport_width * u;
+  vertical = focus_dist * viewport_height * v;
+  lower_left_corner = origin - horizontal/2 - vertical/2 - focus_dist*w
+  lens_radius = aperture / 2
+
+  return Camera2(origin, lower_left_corner, horizontal, vertical, u, v, w, lens_radius)
+end
+
+
+"""Create a ray based on s, t inputs on camera2"""
+function get_ray(camera::Camera2, s::Float32, t::Float32)
+  rd = camera.lens_radius * random_in_unit_disk()
+  offset = to_point(camera.u * rd.x + camera.v * rd.y)
+  return Ray(camera.origin + offset, to_vec(camera.lower_left_corner + s*camera.horizontal + t*camera.vertical - camera.origin - offset))
+end

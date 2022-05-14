@@ -24,3 +24,15 @@ end
 
 
 reflect(v::Vec, n::Vec) = v - 2(v⋅n)*n
+
+
+""" Get a random vector inside a disk of unit size. """
+function random_in_unit_disk()
+  while (true)
+    p = Vec{Float32}(rand(Uniform(-1.0f0, 1.0f0)), rand(Uniform(-1.0f0, 1.0f0)), 0.0f0)
+    if len_squared(p) >= 1.0f0
+      continue
+    end
+    return p
+  end
+end

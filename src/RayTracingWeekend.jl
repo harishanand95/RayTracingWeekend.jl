@@ -12,6 +12,7 @@ export
     Material,
     Lambertian,
     Metal,
+    Dielectric,
     HitRecord2,
     Sphere2,
 # Functions
@@ -36,6 +37,7 @@ export
     clear!,
     scatter,
     get_hit_record,
+    refract,
 # Operators
     ×,
     ⋅,
@@ -50,5 +52,6 @@ include("render.jl")
 include("camera.jl")
 include("material.jl")
 include("hittable.jl")
+include("dielectrics.jl")
 
 end

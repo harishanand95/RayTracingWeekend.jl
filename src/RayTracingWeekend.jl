@@ -21,6 +21,7 @@ export
     to_vec,
     to_point,
     random_vector,
+    unit_vector,
     degrees_to_radians,
     random_in_unit_sphere,
     at,

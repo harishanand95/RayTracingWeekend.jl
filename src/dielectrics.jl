@@ -24,7 +24,7 @@ end
 function scatter(material::Dielectric, r_in::Ray, rec)
   attenuation = RGB{Float32}(1.0, 1.0, 1.0)
   refraction_ratio = rec.front_face ? (1.0f0 / material.ir) : material.ir
-  unit_direction = r_in.direction / len(r_in.direction)
+  unit_direction = unit_vector(r_in.direction)
 
   cosθ = min((-unit_direction ⋅ rec.normal), 1.0f0)
   sinθ = √(1.0f0 - cosθ*cosθ)

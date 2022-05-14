@@ -16,7 +16,7 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
     return 0.5f0 * ray_color(Ray(rec.p, to_vec(target - rec.p)), world, Int32(depth-1))
   end
 
-  unit_direction = ray.direction / len(ray.direction)
+  unit_direction = unit_vector(ray.direction)
   t = 0.5f0*(unit_direction.y + 1.0f0)
   return (1.0f0-t)*RGB{Float32}(1.0, 1.0, 1.0) + t*RGB{Float32}(0.5, 0.7, 1.0)
 end

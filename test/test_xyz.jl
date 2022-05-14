@@ -1,5 +1,4 @@
 # Based on https://raytracing.github.io/books/RayTracingInOneWeekend.html
-import Base
 using RayTracingWeekend
 using Test
 

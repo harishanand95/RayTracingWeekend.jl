@@ -41,7 +41,7 @@ end
 # We define a new set of functions for camera, that can take vertical field of view
 
 """
-Create a camera object from aspect_ratio, viewport_height and focal_length
+Create a camera object from vfov and aspect_ratio.
 """
 function get_camera(vfov::Float32, aspect_ratio::Float32) # vertical field-of-view in degrees
   θ = degrees_to_radians(vfov)
@@ -54,5 +54,27 @@ function get_camera(vfov::Float32, aspect_ratio::Float32) # vertical field-of-vi
   horizontal        = Vec{Float32}(viewport_width, 0, 0) # h direction
   vertical          = Vec{Float32}(0, viewport_height, 0) # v direction
   lower_left_corner = origin - (horizontal/2 + vertical/2 + Vec{Float32}(0.0, 0.0, focal_length))
+  return Camera(origin, lower_left_corner, horizontal, vertical)
+end
+
+"""
+Get a camera that is looking from `lookfrom` and looking at `lookat`.
+Additionally `vup` viewup is provided to allow for rotations.
+
+"""
+function get_camera(lookfrom::Point{Float32}, lookat::Point{Float32}, vup::Vec{Float32}, vfov::Float32, aspect_ratio::Float32)
+  θ = degrees_to_radians(vfov)
+  h = tan(θ/2)
+  viewport_height = 2.0f0 * h
+  viewport_width = aspect_ratio * viewport_height
+
+  w = unit_vector(to_vec(lookfrom - lookat))
+  u = unit_vector(vup × w)
+  v = w × u
+
+  origin = lookfrom;
+  horizontal = viewport_width * u;
+  vertical = viewport_height * v;
+  lower_left_corner = origin - horizontal/2 - vertical/2 - w;
   return Camera(origin, lower_left_corner, horizontal, vertical)
 end

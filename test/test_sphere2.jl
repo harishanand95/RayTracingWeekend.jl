@@ -1,4 +1,3 @@
-import Base
 using RayTracingWeekend
 using Test
 

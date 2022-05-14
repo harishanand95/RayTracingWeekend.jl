@@ -11,7 +11,7 @@ function random_in_unit_sphere(normalized=false)
       continue
     end
     if normalized
-      return p / len(p) # actual lambertian case
+      return unit_vector(p) # actual lambertian case
     end
     return p # a hack to get lambertian.
   end

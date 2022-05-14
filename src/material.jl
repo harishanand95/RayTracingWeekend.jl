@@ -22,7 +22,7 @@ end
 
 
 function scatter(material::Metal, r_in::Ray, rec)
-  reflected = reflect(r_in.direction / len(r_in.direction), rec.normal)
+  reflected = reflect(unit_vector(r_in.direction), rec.normal)
   scattered = Ray(rec.p, reflected + random_in_unit_sphere(true)*material.fuzz)
   attenuation = material.albedo
   return (scattered.direction ⋅ rec.normal) > 0, attenuation, scattered

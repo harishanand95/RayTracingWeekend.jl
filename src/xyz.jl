@@ -74,3 +74,7 @@ to_point(v::Vec) = Point{Float32}(v.x, v.y, v.z)
 
 """ random vector with values between min and max"""
 random_vector(min, max) = Vec{Float32}(rand(Uniform(min, max)), rand(Uniform(min, max)), rand(Uniform(min, max)))
+
+
+""" Normalized the given vector `v`, len after normalization is 1. """
+@inline unit_vector(v::Vec) = v / len(v)

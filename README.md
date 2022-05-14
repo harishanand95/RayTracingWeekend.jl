@@ -8,18 +8,27 @@
 # Chapters 
 The individual chapter programs within the raytacing book are numbered based on the listing number of the code in https://raytracing.github.io/books/RayTracingInOneWeekend.html. You can find the code in `test/chapters` directory.
 
+Benchmarks were done on my PC with AMD Ryzen 7 5800X 8-Core Processor.
+
+
 ## `test/chapters/01_imagegradient.jl`
 
+Benchmark: `254.407 μs (2 allocations: 768.05 KiB)`
 
 ![Kiku](test/imgs/01_imagegradient.png)
 
 
+
 ## `test/chapters/09_skycolor.jl`
+
+Benchmark: `788.809 μs (2 allocations: 1.03 MiB)`
 
 
 ![Kiku](test/imgs/09_skycolor.png)
 
 ## `test/chapters/10_sphere.jl`
+
+Benchmark: `1.683 ms (2 allocations: 1.03 MiB)`
 
 
 ![Kiku](test/imgs/10_sphere.png)
@@ -27,11 +36,15 @@ The individual chapter programs within the raytacing book are numbered based on 
 
 ## `test/chapters/11_spherenormal.jl`
 
+Benchmark: `1.686 ms (2 allocations: 1.03 MiB)`
+
 
 ![Kiku](test/imgs/11_spherenormal.png)
 
 
 ## `test/chapters/24_twospheres.jl`
+
+Benchmark: `7.265 ms (720004 allocations: 20.26 MiB)`
 
 
 ![Kiku](test/imgs/24_twospheres.png)
@@ -39,11 +52,15 @@ The individual chapter programs within the raytacing book are numbered based on 
 
 ## `test/chapters/30_antialiasing.jl`
 
+Benchmark: `932.870 ms (72000004 allocations: 1.88 GiB)`
+
 
 ![Kiku](test/imgs/30_antialiasing.png)
 
 
 ## `test/chapters/40_diffusion.jl`
+
+Benchmark: `1.837 s (130016420 allocations: 3.39 GiB)`
 
 
 ![Kiku](test/imgs/40_diffusion.png)
@@ -51,5 +68,6 @@ The individual chapter programs within the raytacing book are numbered based on 
 
 ## `test/chapters/50_metal.jl`
 
+Benchmark: `4.748 s (333183134 allocations: 7.80 GiB)`
 
 ![Kiku](test/imgs/50_metal.png)

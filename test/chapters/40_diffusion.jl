@@ -13,11 +13,11 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
   rec = get_hit_record()
   if hit(world, ray, Float32(0.001), typemax(Float32), rec)
     target = rec.p + rec.normal + random_in_unit_sphere(true)
-    return 0.5 * ray_color(Ray(rec.p, to_vec(target - rec.p)), world, Int32(depth-1))
+    return 0.5f0 * ray_color(Ray(rec.p, to_vec(target - rec.p)), world, Int32(depth-1))
   end
 
   unit_direction = ray.direction / len(ray.direction)
-  t = 0.5*(unit_direction.y + 1.0)
+  t = 0.5f0*(unit_direction.y + 1.0f0)
   return (1.0f0-t)*RGB{Float32}(1.0, 1.0, 1.0) + t*RGB{Float32}(0.5, 0.7, 1.0)
 end
 
@@ -27,8 +27,8 @@ function render()
   aspect_ratio      = Float32(16/9)
   image_width       = Int32(400)
   image_height      = Int32(image_width / aspect_ratio)
-  samples_per_pixel = Int32(50)
-  max_depth         = Int32(100)
+  samples_per_pixel = Int32(100)
+  max_depth         = Int32(50)
 
   # World
   world = Vector{Hittable}()
@@ -56,6 +56,6 @@ function render()
   img
 end
 
-@btime render()  # old 7.794 s new 877.453 ms
+@btime render()  # old 7.794s, new 899.270 ms
 
 save("imgs/40_diffusion.png", render())

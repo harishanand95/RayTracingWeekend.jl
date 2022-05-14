@@ -47,3 +47,9 @@ The individual chapter programs within the raytacing book are numbered based on 
 
 
 ![Kiku](test/imgs/40_diffusion.png)
+
+
+## `test/chapters/50_metal.jl`
+
+
+![Kiku](test/imgs/50_metal.png)

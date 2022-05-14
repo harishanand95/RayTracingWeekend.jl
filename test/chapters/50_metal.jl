@@ -70,4 +70,4 @@ function render()
 end
 
 @btime render()  # 7.794 s
-save("imgs/40_diffusion.png", render())
+save("imgs/50_metal.png", render())

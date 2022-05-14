@@ -18,4 +18,4 @@ function render()
 end
 
 @btime render()
-save("imgs/01_imagegradient.png", img)
+save("imgs/01_imagegradient.png", render())

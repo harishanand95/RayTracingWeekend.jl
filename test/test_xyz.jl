@@ -5,10 +5,6 @@ using Test
 
 @testset "Tests: xyz.jl" begin
     @testset "Point Vec XYZ types" begin
-        x = XYZ{Float64}(1.0, 2.0, 3.0)
-        minus_x = XYZ{Float64}(-1.0, -2.0, -3.0)
-        @test minus_x == -x
-
         p = Point{Float32}(1.0, 2.0, 3.0)
         minus_p = Point{Float32}(-1.0, -2.0, -3.0)
         @test minus_p == -p

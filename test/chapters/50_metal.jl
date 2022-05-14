@@ -2,6 +2,8 @@ using Images, ImageView, BenchmarkTools
 using RayTracingWeekend
 
 import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
+using Random
+Random.seed!(1234)
 
 
 # Ray color with recursion depth
@@ -69,5 +71,6 @@ function render()
   img
 end
 
+print(@__FILE__)
 @btime render()  # 4.748 s
 save("imgs/50_metal.png", render())

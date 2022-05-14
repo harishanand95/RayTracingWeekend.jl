@@ -1,7 +1,8 @@
 using Images, ImageView, BenchmarkTools
 using RayTracingWeekend
 import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
-
+using Random
+Random.seed!(1234)
 
 # Ray color
 function ray_color(ray::Ray, world::Vector{<:Hittable})
@@ -49,5 +50,6 @@ function render()
   img
 end
 
+print(@__FILE__)
 @btime render() # old time 9.802 s, new 896.789 ms (set float to FP32)
 save("imgs/30_antialiasing.png", render())

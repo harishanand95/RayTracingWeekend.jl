@@ -43,5 +43,6 @@ function render()
   img
 end
 
+print(@__FILE__)
 @btime render()
 save("imgs/09_skycolor.png", render())

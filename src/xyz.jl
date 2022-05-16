@@ -27,7 +27,7 @@ end
 
 Returns x² + y² + z²
 """
-len_squared(p1::Union{Point, Vec}) = Float32(p1.x^2 + p1.y^2 + p1.z^2)
+@inline len_squared(p1::Union{Point, Vec}) = Float32(p1.x^2 + p1.y^2 + p1.z^2)
 
 
 """
@@ -35,7 +35,7 @@ len_squared(p1::Union{Point, Vec}) = Float32(p1.x^2 + p1.y^2 + p1.z^2)
 
 Returns the √(x² + y² + z²)
 """
-len(p1::Union{Point, Vec}) = √(len_squared(p1))
+@inline len(p1::Union{Point, Vec}) = √(len_squared(p1))
 
 
 # Dot product
@@ -59,21 +59,21 @@ end
 
     Cross product of 2 vectors, return a new vector
 """
-function (×)(u::Union{Point{Float32}, Vec{Float32}}, v::Union{Point{Float32}, Vec{Float32}})
+@inline function (×)(u::Union{Point{Float32}, Vec{Float32}}, v::Union{Point{Float32}, Vec{Float32}})
   return Vec{Float32}((u.y * v.z) - (u.z * v.y), (u.z * v.x) - (u.x * v.z), (u.x * v.y) - (u.y * v.x))
 end
 
 
 """ Convert a point to a vector (subtract from Vec(0.0, 0.0, 0.0)) """
-to_vec(p::Point{Float32}) = convert(Vec{Float32}, p)
+@inline to_vec(p::Point{Float32}) = convert(Vec{Float32}, p)
 
 
 """ Convert a vec to a point """
-to_point(v::Vec{Float32}) = convert(Point{Float32}, v)
+@inline to_point(v::Vec{Float32}) = convert(Point{Float32}, v)
 
 
 """ random vector with values between min and max"""
-random_vector(min::Float32, max::Float32) = Vec{Float32}(rand(Uniform(min, max)), rand(Uniform(min, max)), rand(Uniform(min, max)))
+@inline random_vector(min::Float32, max::Float32) = Vec{Float32}(rand(Uniform(min, max)), rand(Uniform(min, max)), rand(Uniform(min, max)))
 
 
 """ Normalized the given vector `v`, len after normalization is 1. """

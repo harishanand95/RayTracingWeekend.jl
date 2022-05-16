@@ -21,7 +21,7 @@ end
 """
     Set HitRecord `rec` to the arguments passed.
 """
-@inline function set_hit_record(rec::HitRecord, p::Point, normal::Vec, t::Float32, front_face::Bool)
+@inline function set_hit_record(rec::HitRecord, p::Point{Float32}, normal::Vec{Float32}, t::Float32, front_face::Bool)
   setfield!(rec, :t, t)
   setfield!(rec, :p, p)
   setfield!(rec, :normal, normal)
@@ -60,10 +60,10 @@ end
 
 
 """ set_hit_record sets fields inside HitRecord2 `rec` to the arguments passed"""
-@inline function set_hit_record(rec::HitRecord2, p::Point, normal::Vec, t::Float32, front_face::Bool, material::Material)
+function set_hit_record(rec::HitRecord2, p::Point{Float32}, n::Vec{Float32}, t::Float32, front_face::Bool, material::Material)
   setfield!(rec, :t, t)
   setfield!(rec, :p, p)
-  setfield!(rec, :normal, normal)
+  setfield!(rec, :normal, n)
   setfield!(rec, :front_face, front_face)
   setfield!(rec, :material, material)
 end
@@ -129,7 +129,7 @@ function hit!(object::Union{Sphere, Sphere2}, ray::Ray, t_min::Float32, t_max::F
   
   outward_normal = to_vec(rec.p - object.center) / object.radius
   front_face = (ray.direction ⋅ outward_normal) < 0
-  normal = front_face ? outward_normal : -outward_normal
+  normal = front_face ? outward_normal : -outward_normal 
 
   if typeof(rec) == HitRecord2 && typeof(object) == Sphere2
     set_hit_record(rec, at(ray, rec.t), normal, root, front_face, object.material)
@@ -146,7 +146,7 @@ end
 """
 function hit(objects::Vector{<:Hittable}, ray::Ray, t_min::Float32, t_max::Float32, rec::Union{HitRecord, HitRecord2})
   if typeof(rec) == HitRecord2
-    temp = get_hit_record(Metal(0.0, 0.0))
+    temp = get_hit_record(Lambertian(0.0f0))
   else
     temp = get_hit_record()
   end

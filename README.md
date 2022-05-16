@@ -58,8 +58,45 @@ Benchmark: `1.837 s (130016420 allocations: 3.39 GiB)`
 
 ![Kiku](test/imgs/40_diffusion.png)
 
+
 ## [test/chapters/50_metal.jl](test/chapters/50_metal.jl)
 
 Benchmark: `4.748 s (333183134 allocations: 7.80 GiB)`
 
 ![Kiku](test/imgs/50_metal.png)
+
+
+## [test/chapters/60_dielectrics.jl](test/chapters/60_dielectrics.jl)
+
+Benchmark: `6.899 s (485701411 allocations: 11.07 GiB)`
+
+![Kiku](test/imgs/60_dielectrics.png)
+
+
+## [test/chapters/63_new_camera.jl](test/chapters/63_new_camera.jl)
+
+Benchmark: `2.074 s (137304900 allocations: 3.58 GiB)`
+
+![Kiku](test/imgs/63_new_camera.png)
+
+
+## [test/chapters/64_distant_view.jl](test/chapters/64_distant_view.jl)
+
+Benchmark: `8.151 s (554879562 allocations: 12.65 GiB)`
+
+![Kiku](test/imgs/64_distant_view.png)
+
+
+
+## [test/chapters/68_defocus_blur.jl](test/chapters/68_defocus_blur.jl)
+
+Benchmark: `6.316 s (446907564 allocations: 10.19 GiB)`
+
+![Kiku](test/imgs/68_defocus_blur.png)
+
+
+## [test/chapters/70_final_scene.jl](test/chapters/70_final_scene.jl)
+
+Benchmark (used time here, instead of btime): ``
+
+![Kiku](test/imgs/70_final_scene.png)

@@ -66,13 +66,11 @@ function random_scene()
 end
 
 
-function render()
+function render(image_width::Int32, samples_per_pixel::Int32, max_depth::Int32)
   # Image
   aspect_ratio      = Float32(3/2)
-  image_width       = Int32(1200)
   image_height      = Int32(image_width / aspect_ratio)
-  samples_per_pixel = Int32(500)
-  max_depth         = Int32(50)
+
 
   # World
   world = random_scene()
@@ -103,6 +101,5 @@ function render()
 end
 
 print(@__FILE__)
-# @btime render()  # cant do this btw too long
-@time img = render()
-save("imgs/70_final_scene.png", img)
+@time render(Int32(300), Int32(100), Int32(50)) # 260.481239 seconds (25.37 G allocations: 504.928 GiB, 10.61% gc time)
+save("imgs/70_final_scene.png", render(Int32(300), Int32(100), Int32(50)))

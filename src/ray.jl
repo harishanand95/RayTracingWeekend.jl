@@ -3,8 +3,8 @@ import Images.RGB
 # Define ray P(t) = Origin + direction * (t)
 """
     r = Ray(origin, direction)
-    r.origin ::Point 
-    r.direction ::Vec 
+    r.origin ::Point{Float32}
+    r.direction ::Vec{Float32}
     at(r::Ray, t::Float32) ::Point 
 
 Rays simulate the physical rays, they have a direction and origin.
@@ -26,8 +26,8 @@ end
 
 
 """
-   pixel_color (p::Point) -> ::Point{Int8}
+   pixel_color (p::Point) -> ::RGB{Float32}
 Return an RGB pixel color for the input point p where p.x, p.y and p.z is 0-1 range.
 """
-pixel_color(p::Point) = RGB{Float32}(p.x, p.y, p.z)
+pixel_color(p::Point{Float32}) = RGB{Float32}(p.x, p.y, p.z)
 

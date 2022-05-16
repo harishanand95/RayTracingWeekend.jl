@@ -18,12 +18,12 @@ function random_in_unit_sphere(normalized=false)
 end
 
 
-function near_zero(v::Vec)
+function near_zero(v::Vec{Float32})
   return v.x < 1e-8 && v.y < 1e-8 && v.z < 1e-8
 end
 
 
-reflect(v::Vec, n::Vec) = v - 2(v⋅n)*n
+reflect(v::Vec{Float32}, n::Vec{Float32}) = v - 2(v⋅n)*n
 
 
 """ Get a random vector inside a disk of unit size. """

@@ -48,7 +48,7 @@ x2 = Vec{Int32}(1.0, 2.0, 3.0)
 println(x1 ⋅ x2)
 
 """
-@inline function (⋅)(p1::Union{Point, Vec}, p2::Union{Point, Vec})
+@inline function (⋅)(p1::Union{Point{Float32}, Vec{Float32}}, p2::Union{Point{Float32}, Vec{Float32}})
   return Float32(p1.x * p2.x + p1.y * p2.y + p1.z * p2.z)
 end
 
@@ -59,22 +59,22 @@ end
 
     Cross product of 2 vectors, return a new vector
 """
-function (×)(u::Union{Point, Vec}, v::Union{Point, Vec})
+function (×)(u::Union{Point{Float32}, Vec{Float32}}, v::Union{Point{Float32}, Vec{Float32}})
   return Vec{Float32}((u.y * v.z) - (u.z * v.y), (u.z * v.x) - (u.x * v.z), (u.x * v.y) - (u.y * v.x))
 end
 
 
 """ Convert a point to a vector (subtract from Vec(0.0, 0.0, 0.0)) """
-to_vec(p::Point) = Vec{Float32}(p.x, p.y, p.z)
+to_vec(p::Point{Float32}) = convert(Vec{Float32}, p)
 
 
 """ Convert a vec to a point """
-to_point(v::Vec) = Point{Float32}(v.x, v.y, v.z)
+to_point(v::Vec{Float32}) = convert(Point{Float32}, v)
 
 
 """ random vector with values between min and max"""
-random_vector(min, max) = Vec{Float32}(rand(Uniform(min, max)), rand(Uniform(min, max)), rand(Uniform(min, max)))
+random_vector(min::Float32, max::Float32) = Vec{Float32}(rand(Uniform(min, max)), rand(Uniform(min, max)), rand(Uniform(min, max)))
 
 
 """ Normalized the given vector `v`, len after normalization is 1. """
-@inline unit_vector(v::Vec) = v / len(v)
+@inline unit_vector(v::Vec{Float32}) = v / len(v)

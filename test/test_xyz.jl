@@ -65,10 +65,9 @@ using Test
         @test Vec{Float32}(0.0, 0.0, 0.0) == p3_
     end
     @testset "to_vec, to_point test" begin
-        x1 = Point{Int32}(1.0, 2.0, 3.0)
+        x1 = Point{Float32}(1.0, 2.0, 3.0)
         v1 = to_vec(x1)
-        @test Vec{Int32}(1.0, 2.0, 3.0) == v1
-        
+        @test Vec{Float32}(1.0, 2.0, 3.0) == v1
         t1 = to_point(v1)
         @test t1 == x1
     end

@@ -11,7 +11,7 @@ function render()
   # julia is col major
   for col in 1:width 
     for row in 1:height 
-      img[row, col] = pixel_color(Point(col/256, (256-row)/256, 0.25))
+      img[row, col] = pixel_color(Point{Float32}(col/256, (256-row)/256, 0.25))
     end
   end
   img

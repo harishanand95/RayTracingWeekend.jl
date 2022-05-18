@@ -38,8 +38,10 @@ export
     hit,
     add!,
     clear!,
+    near_zero,
     scatter,
     get_hit_record,
+    reflect,
     refract,
 # Operators
     ×,

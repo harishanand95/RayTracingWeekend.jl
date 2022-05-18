@@ -2,6 +2,7 @@
 import Base
 using Distributions
 using StaticArrays
+using LinearAlgebra
 
 # http://www.stochasticlifestyle.com/type-dispatch-design-post-object-oriented-programming-julia/
 # julia follows inheritance by actions than data. Setup the abstract types hierarchy to mean the 
@@ -27,7 +28,7 @@ end
 
 Returns x² + y² + z²
 """
-@inline len_squared(p1::Union{Point, Vec}) = Float32(p1.x^2 + p1.y^2 + p1.z^2)
+@inline len_squared(p1::Union{Point, Vec})::Float32 = p1 ⋅ p1
 
 
 """
@@ -35,33 +36,7 @@ Returns x² + y² + z²
 
 Returns the √(x² + y² + z²)
 """
-@inline len(p1::Union{Point, Vec}) = √(len_squared(p1))
-
-
-# Dot product
-"""
-    p1::Vec ⋅ p2::Vec -> Float32
-Returns the result of dot product of 2 Vec
-
-x1 = Vec{Int32}(1.0, 2.0, 3.0)
-x2 = Vec{Int32}(1.0, 2.0, 3.0)
-println(x1 ⋅ x2)
-
-"""
-@inline function (⋅)(p1::Union{Point{Float32}, Vec{Float32}}, p2::Union{Point{Float32}, Vec{Float32}})
-  return Float32(p1.x * p2.x + p1.y * p2.y + p1.z * p2.z)
-end
-
-
-# Cross product
-"""
-    p1::Vec × p2::Vec -> ::Vec
-
-    Cross product of 2 vectors, return a new vector
-"""
-@inline function (×)(u::Union{Point{Float32}, Vec{Float32}}, v::Union{Point{Float32}, Vec{Float32}})
-  return Vec{Float32}((u.y * v.z) - (u.z * v.y), (u.z * v.x) - (u.x * v.z), (u.x * v.y) - (u.y * v.x))
-end
+@inline len(p1::Union{Point, Vec})::Float32 = √(p1 ⋅ p1)
 
 
 """ Convert a point to a vector (subtract from Vec(0.0, 0.0, 0.0)) """

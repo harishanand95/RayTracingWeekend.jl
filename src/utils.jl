@@ -2,7 +2,7 @@
   return degrees * pi / 180.0f0;
 end
 
-function random_in_unit_sphere(normalized=false) 
+function random_in_unit_sphere(normalized=false)::Vec{Float32}
   while (true)
     p = random_vector(Float32(-1.0), Float32(1.0))
     if (len_squared(p) >= 1) 
@@ -21,11 +21,11 @@ end
 end
 
 
-reflect(v::Vec{Float32}, n::Vec{Float32}) = v - 2(v⋅n)*n
+@inline reflect(v::Vec{Float32}, n::Vec{Float32})::Vec{Float32} = v - 2(v⋅n)*n
 
 
 """ Get a random vector inside a disk of unit size. """
-function random_in_unit_disk()
+function random_in_unit_disk()::Vec{Float32}
   while (true)
     p = Vec{Float32}(rand(Uniform(-1.0f0, 1.0f0)), rand(Uniform(-1.0f0, 1.0f0)), 0.0f0)
     if len_squared(p) >= 1.0f0

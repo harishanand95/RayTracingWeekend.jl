@@ -54,8 +54,8 @@ end
 """
     Get a HitRecord2 object with default values, and a given material (since material is abstract).
 """
-@inline function get_hit_record(material::Material)
-  HitRecord2(Point{Float32}(0.0, 0.0, 0.0), Vec{Float32}(0.0, 0.0, 0.0), Float32(0.0), false, material)
+function get_hit_record(material::Material)
+  return HitRecord2(Point{Float32}(0.0, 0.0, 0.0), Vec{Float32}(0.0, 0.0, 0.0), Float32(0.0), false, material)
 end
 
 

@@ -56,6 +56,7 @@ include("ray.jl")
 include("render.jl")
 include("camera.jl")
 include("material.jl")
+include("hitrecord.jl")
 include("hittable.jl")
 include("dielectrics.jl")
 

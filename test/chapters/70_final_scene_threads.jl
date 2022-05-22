@@ -4,7 +4,7 @@ using Distributions
 import RayTracingWeekend.⋅ # Images has \cdot so specifying which one to use
 using Random
 Random.seed!(1234)
-
+using Base.Threads
 
 # Ray color with recursion depth
 function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
@@ -85,7 +85,7 @@ function render(image_width::Int32, samples_per_pixel::Int32, max_depth::Int32)
 
   img = rand(RGB{Float32}, image_height, image_width)
   # col-major
-  for col in 1:image_width 
+  @threads for col in 1:image_width 
     for row in 1:image_height 
       pixel = RGB{Float32}(0, 0, 0)
       for s in 1:samples_per_pixel
@@ -101,5 +101,5 @@ function render(image_width::Int32, samples_per_pixel::Int32, max_depth::Int32)
 end
 
 print(@__FILE__)
-@time render(Int32(400), Int32(100), Int32(50)) # 188.874585 seconds (37.66 G allocations: 749.518 GiB, 62.64% gc time, 0.11% compilation time)
+@time render(Int32(400), Int32(100), Int32(50)) # 260.481239 seconds (25.37 G allocations: 504.928 GiB, 10.61% gc time)
 save("imgs/70_final_scene.png", render(Int32(400), Int32(1), Int32(16)))

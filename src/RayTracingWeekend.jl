@@ -27,7 +27,6 @@ export
     random_in_unit_sphere,
     random_in_unit_disk,
     at,
-    pixel_color,
     sky_color,
     get_camera,
     get_ray,

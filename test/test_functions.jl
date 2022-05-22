@@ -57,10 +57,6 @@ println("at()")
 @btime at(ray, t)
 @test_no_allocs at(ray, t)
 
-println("pixel_color()")
-@btime pixel_color(p1)
-@test_no_allocs pixel_color(p1)
-
 println("degrees_to_radians()")
 @btime degrees_to_radians($t)
 @test_no_allocs degrees_to_radians($t)

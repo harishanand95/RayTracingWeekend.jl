@@ -23,11 +23,3 @@ end
     r.origin.z + t * r.direction.z
   )
 end
-
-
-"""
-   pixel_color (p::Point) -> ::RGB{Float32}
-Return an RGB pixel color for the input point p where p.x, p.y and p.z is 0-1 range.
-"""
-pixel_color(p::Point{Float32}) = RGB{Float32}(p.x, p.y, p.z)
-

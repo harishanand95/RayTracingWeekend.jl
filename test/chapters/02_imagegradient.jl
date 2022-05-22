@@ -1,11 +1,13 @@
 using Images, ImageView
 using RayTracingWeekend
 using BenchmarkTools
+using Base.Threads
+using InteractiveUtils
 
 function render()
   # Generate an 256x256 image
-  height = trunc(256)
-  width = trunc(256)
+  height = 256
+  width = 256
   img = rand(RGB{Float32}, height, width)
 
   # julia is col major
@@ -18,5 +20,9 @@ function render()
 end
 
 print(@__FILE__)
-@btime render()
+time_f() = @time render()
+time_f() 
+time_f() 
+
+# @btime render()
 save("imgs/01_imagegradient.png", render())

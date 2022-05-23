@@ -27,7 +27,7 @@ end
 """ Get a random vector inside a disk of unit size. """
 function random_in_unit_disk()::Vec{Float32}
   while (true)
-    p = Vec{Float32}(rand(Uniform(-1.0f0, 1.0f0)), rand(Uniform(-1.0f0, 1.0f0)), 0.0f0)
+    p = Vec{Float32}(rand(Float32), rand(Float32), 0.0f0)
     if len_squared(p) >= 1.0f0
       continue
     end

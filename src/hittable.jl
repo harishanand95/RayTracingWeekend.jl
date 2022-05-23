@@ -23,18 +23,17 @@ end
 function hit!(object::Union{Sphere, Sphere2}, ray::Ray, t_min::Float32, t_max::Float32, rec::Union{HitRecord, HitRecord2})
   oc = to_vec(ray.origin - object.center)
   a = ray.direction ⋅ ray.direction
-  b = 2.0f0 * (oc ⋅ ray.direction)
-  c = (oc ⋅ oc) - (object.radius*object.radius)
-  discriminant = Float32(b*b) - Float32(4.0*a*c)
-  
+  half_b = oc ⋅ ray.direction
+  c = oc ⋅oc - object.radius^2
+  discriminant = half_b*half_b - a*c
   if (discriminant < 0) 
     return false
   end
-  
-  root = Float32((-b - sqrt(discriminant)) / (2.0*a))
+  sqrtd = sqrt(discriminant)
+  root = (-half_b - sqrtd) / a
 
   if (root < t_min) || (t_max < root)
-    root = Float32((-b + sqrt(discriminant)) / (2.0*a))
+    root = Float32((-half_b + sqrtd) / a)
     if (root < t_min) || (t_max < root)
       return false
     end

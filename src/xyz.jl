@@ -48,7 +48,7 @@ Returns the √(x² + y² + z²)
 
 
 """ random vector with values between min and max"""
-@inline random_vector(min::Float32, max::Float32)::Vec{Float32} = Vec{Float32}(rand(Uniform(min, max)), rand(Uniform(min, max)), rand(Uniform(min, max)))
+@inline random_vector(min::Float32, max::Float32)::Vec{Float32} = Vec{Float32}(.+(rand(Float32, 3) * (max-min), min))
 
 
 """ Normalized the given vector `v`, len after normalization is 1. """

@@ -22,13 +22,12 @@ end
 
 
 function scatter(material::Dielectric, r_in::Ray, rec)
-  attenuation = RGB{Float32}(1.0, 1.0, 1.0)
   refraction_ratio = rec.front_face ? (1.0f0 / material.ir) : material.ir
   unit_direction = unit_vector(r_in.direction)
 
   cosθ = min((-unit_direction ⋅ rec.normal), 1.0f0)
   sinθ = √(1.0f0 - cosθ*cosθ)
-  cannot_refract = (refraction_ratio * sinθ) > 1.0
+  cannot_refract = (refraction_ratio * sinθ) > 1.0f0
 
   if (cannot_refract || reflectance(cosθ, refraction_ratio) > rand(Float32))
     direction = reflect(unit_direction, rec.normal)
@@ -37,6 +36,5 @@ function scatter(material::Dielectric, r_in::Ray, rec)
   end
 
   scattered = Ray(rec.p, direction)
-  attenuation = material.albedo
-  return true, attenuation, scattered
+  return true, RGB{Float32}(1.0, 1.0, 1.0), scattered
 end

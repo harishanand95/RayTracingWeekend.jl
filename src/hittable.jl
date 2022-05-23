@@ -23,9 +23,9 @@ end
 function hit!(object::Union{Sphere, Sphere2}, ray::Ray, t_min::Float32, t_max::Float32, rec::Union{HitRecord, HitRecord2})
   oc = to_vec(ray.origin - object.center)
   a = ray.direction ⋅ ray.direction
-  b = 2.0 * (oc ⋅ ray.direction)
+  b = 2.0f0 * (oc ⋅ ray.direction)
   c = (oc ⋅ oc) - (object.radius*object.radius)
-  discriminant = (b*b) - (4.0*a*c)
+  discriminant = Float32(b*b) - Float32(4.0*a*c)
   
   if (discriminant < 0) 
     return false
@@ -39,18 +39,16 @@ function hit!(object::Union{Sphere, Sphere2}, ray::Ray, t_min::Float32, t_max::F
       return false
     end
   end
-
-  setfield!(rec, :t, root)
-  setfield!(rec, :p, at(ray, rec.t))
+  p = at(ray, root)
   
-  outward_normal = to_vec(rec.p - object.center) / object.radius
+  outward_normal = to_vec(p - object.center) / object.radius
   front_face = (ray.direction ⋅ outward_normal) < 0
   normal = front_face ? outward_normal : -outward_normal 
 
-  if typeof(rec) == HitRecord2 && typeof(object) == Sphere2
-    set_hit_record(rec, at(ray, rec.t), normal, root, front_face, object.material)
+  if typeof(object) == Sphere2
+    set_hit_record(rec, p, normal, root, front_face, object.material)
   else
-    set_hit_record(rec, at(ray, rec.t), normal, root, front_face)
+    set_hit_record(rec, p, normal, root, front_face)
   end
 
   return true
@@ -67,14 +65,17 @@ function hit(objects::Vector{<:Hittable}, ray::Ray, t_min::Float32, t_max::Float
     temp = get_hit_record()
   end
   hit_anything=false
-  closest_so_far = t_max
 
   for object in objects
-    if (hit!(object, ray, t_min, closest_so_far, temp)) 
+    if (hit!(object, ray, t_min, t_max, temp)) 
       hit_anything = true
-      closest_so_far = temp.t
-      set_hit_record(temp, rec)
+      t_max = temp.t
     end
+  end
+
+  if hit_anything
+    set_hit_record(temp, rec)
+    return hit_anything
   end
   return hit_anything
 end

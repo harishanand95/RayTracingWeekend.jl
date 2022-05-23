@@ -101,5 +101,5 @@ function render(image_width::Int32, samples_per_pixel::Int32, max_depth::Int32)
 end
 
 print(@__FILE__)
-@time render(Int32(400), Int32(100), Int32(50)) # 260.481239 seconds (25.37 G allocations: 504.928 GiB, 10.61% gc time)
+@btime render(Int32(96), Int32(1), Int32(16)) # 260.481239 seconds (25.37 G allocations: 504.928 GiB, 10.61% gc time)
 save("imgs/70_final_scene.png", render(Int32(400), Int32(1), Int32(16)))

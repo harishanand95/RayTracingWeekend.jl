@@ -14,7 +14,7 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
   end
 
   rec = get_hit_record(Metal(0.0f0, 0.0f0))
-  if hit(world, ray, Float32(0.001), Float32(1e-4), rec)
+  if hit(world, ray, Float32(0.001), typemax(Float32), rec)
     result, attenuation, scattered = scatter(rec.material, ray, rec)
     if result
       r_color = ray_color(scattered, world, Int32(depth-1))
@@ -101,14 +101,19 @@ end
 
 print(@__FILE__)
 
-# @time render(Int32(400), Int32(10), Int32(5)) 
-# 15.686473 seconds (1.32 G allocations: 26.267 GiB, 11.12% gc time, 2.02% compilation time)
-# 15.611489 seconds (1.31 G allocations: 26.153 GiB, 11.58% gc time)
-
+# Tests
+# @btime render(Int32(400), Int32(2), Int32(5))
+# @time render(Int32(400), Int32(2), Int32(5))
+#
+# Original
+# 6.570 s (663598297 allocations: 13.28 GiB)
+# 6.411634 seconds (657.03 M allocations: 13.157 GiB, 9.34% gc time)
+#
 # after fixing random_vector
-# 13.085881 seconds (1.32 G allocations: 26.234 GiB, 9.04% gc time, 1.06% compilation time)
-# 13.047904 seconds (1.31 G allocations: 26.153 GiB, 9.16% gc time)
-@time render(Int32(400), Int32(10), Int32(5))
-@time render(Int32(400), Int32(10), Int32(5))
+# 6.181 s (644298950 allocations: 12.82 GiB)
+# 6.312652 seconds (656.51 M allocations: 13.067 GiB, 8.83% gc time)
+
+@btime render(Int32(400), Int32(2), Int32(5))
+@time render(Int32(400), Int32(2), Int32(5))
 
 save("imgs/70_final_scene.png", render(Int32(400), Int32(1), Int32(16)))

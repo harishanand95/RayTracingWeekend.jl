@@ -102,14 +102,19 @@ end
 
 print(@__FILE__)
 
-# @time render(Int32(400), Int32(10), Int32(5)) 
-# 32.475968 seconds (3.25 G allocations: 64.979 GiB, 9.20% gc time, 0.04% compilation time)
-# 31.821308 seconds (3.24 G allocations: 64.954 GiB, 8.84% gc time)
-
+# Tests
+# @btime render(Int32(400), Int32(2), Int32(5))
+# @time render(Int32(400), Int32(2), Int32(5))
+#
+# Original
+# 6.570 s (663598297 allocations: 13.28 GiB)
+# 6.411634 seconds (657.03 M allocations: 13.157 GiB, 9.34% gc time)
+#
 # after fixing random_vector
-# 31.879191 seconds (3.24 G allocations: 64.440 GiB, 8.90% gc time, 0.03% compilation time)
-# 31.675399 seconds (3.24 G allocations: 64.452 GiB, 8.46% gc time)
-@time render(Int32(400), Int32(10), Int32(5))
-@time render(Int32(400), Int32(10), Int32(5))
+# 6.289 s (652572133 allocations: 12.99 GiB)
+# 6.187880 seconds (641.67 M allocations: 12.772 GiB, 8.56% gc time)
+
+@btime render(Int32(400), Int32(2), Int32(5))
+@time render(Int32(400), Int32(2), Int32(5))
 
 save("imgs/70_final_scene.png", render(Int32(400), Int32(1), Int32(16)))

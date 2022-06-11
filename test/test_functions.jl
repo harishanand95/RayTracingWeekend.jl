@@ -43,6 +43,9 @@ v1 = Vec{Float32}(0, 0, 1)
 @test_no_allocs to_point($v1)
 @assert typeof(to_point(v1)) == Point{Float32}
 
+
+# random_vector()
+# 66.300 ns (3 allocations: 240 bytes), must be < 5ns
 println("random_vector()")
 @btime random_vector(1.0f0, 2.0f0)
 @test_no_allocs random_vector(1.0f0, 2.0f0)
@@ -87,7 +90,6 @@ println("sky_color()")
 @btime sky_color(ray)
 @test_no_allocs sky_color(ray)
 @assert typeof(sky_color(ray)) == RGB{Float32}
-
 
 println("get_camera()")
 @btime get_camera()

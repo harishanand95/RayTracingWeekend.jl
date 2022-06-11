@@ -68,9 +68,8 @@ end
 
 function render(image_width::Int32, samples_per_pixel::Int32, max_depth::Int32)
   # Image
-  aspect_ratio      = Float32(16/9)
-  image_height      = Int32(image_width / aspect_ratio)
-
+  aspect_ratio = Float32(16/9)
+  image_height = Int32(image_width / aspect_ratio)
 
   # World
   world = random_scene()
@@ -101,5 +100,15 @@ function render(image_width::Int32, samples_per_pixel::Int32, max_depth::Int32)
 end
 
 print(@__FILE__)
-@btime render(Int32(400), Int32(100), Int32(50)) # 260.481239 seconds (25.37 G allocations: 504.928 GiB, 10.61% gc time)
-save("imgs/70_final_scene.png", render(Int32(400), Int32(100), Int32(50)))
+
+# @time render(Int32(400), Int32(10), Int32(5)) 
+# 15.686473 seconds (1.32 G allocations: 26.267 GiB, 11.12% gc time, 2.02% compilation time)
+# 15.611489 seconds (1.31 G allocations: 26.153 GiB, 11.58% gc time)
+
+# after fixing random_vector
+# 13.085881 seconds (1.32 G allocations: 26.234 GiB, 9.04% gc time, 1.06% compilation time)
+# 13.047904 seconds (1.31 G allocations: 26.153 GiB, 9.16% gc time)
+@time render(Int32(400), Int32(10), Int32(5))
+@time render(Int32(400), Int32(10), Int32(5))
+
+save("imgs/70_final_scene.png", render(Int32(400), Int32(1), Int32(16)))

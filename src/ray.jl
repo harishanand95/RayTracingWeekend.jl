@@ -17,7 +17,7 @@ end
 
 """ at(ray, t) returns the point in 3D of ray at `t`. """
 @inline function at(r::Ray, t::Float32)
-  Point{Float32}(
+  return Point{Float32}(
     r.origin.x + t * r.direction.x,
     r.origin.y + t * r.direction.y,
     r.origin.z + t * r.direction.z

@@ -38,6 +38,7 @@ function hit!(object::Union{Sphere, Sphere2}, ray::Ray, t_min::Float32, t_max::F
       return false
     end
   end
+
   p = at(ray, root)
   
   outward_normal = to_vec(p - object.center) / object.radius

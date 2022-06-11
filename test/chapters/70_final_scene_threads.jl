@@ -14,7 +14,7 @@ function ray_color(ray::Ray, world::Vector{<:Hittable}, depth::Int32)
   end
 
   rec = get_hit_record(Metal(0.0f0, 0.0f0))
-  if hit(world, ray, Float32(0.001), typemax(Float32), rec)
+  if hit(world, ray, Float32(0.001), Float32(1e-4), rec)
     result, attenuation, scattered = scatter(rec.material, ray, rec)
     if result
       r_color = ray_color(scattered, world, Int32(depth-1))
@@ -89,8 +89,8 @@ function render(image_width::Int32, samples_per_pixel::Int32, max_depth::Int32)
     for row in 1:image_height 
       pixel = RGB{Float32}(0, 0, 0)
       for s in 1:samples_per_pixel
-        u = Float32((col + rand()) / image_width)
-        v = Float32(((image_height-row) + rand()) / image_height) 
+        u = Float32((col + rand(Float32)) / image_width)
+        v = Float32(((image_height-row) + rand(Float32)) / image_height) 
         ray = get_ray(cam, u, v)
         pixel += ray_color(ray, world, max_depth)
       end
@@ -101,5 +101,5 @@ function render(image_width::Int32, samples_per_pixel::Int32, max_depth::Int32)
 end
 
 print(@__FILE__)
-@btime render(Int32(96), Int32(1), Int32(16)) # 260.481239 seconds (25.37 G allocations: 504.928 GiB, 10.61% gc time)
-save("imgs/70_final_scene.png", render(Int32(400), Int32(1), Int32(16)))
+@btime render(Int32(400), Int32(100), Int32(50)) # 260.481239 seconds (25.37 G allocations: 504.928 GiB, 10.61% gc time)
+save("imgs/70_final_scene.png", render(Int32(400), Int32(100), Int32(50)))

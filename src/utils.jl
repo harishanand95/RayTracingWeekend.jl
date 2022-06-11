@@ -4,8 +4,8 @@ end
 
 function random_in_unit_sphere(normalized=false)::Vec{Float32}
   while (true)
-    p = random_vector(Float32(-1.0), Float32(1.0))
-    if (len_squared(p) >= 1) 
+    p = random_vector(-1.0f0, 1.0f0)
+    if (len_squared(p) >= 1.0f0) 
       continue
     end
     if normalized

@@ -120,7 +120,7 @@ println("get_camera(vfov::Float32, aspect_ratio::Float32)")
 
 println("get_camera(lookfrom::Point{Float32}, lookat::Point{Float32}, vup::Vec{Float32}, vfov::Float32, aspect_ratio::Float32)")
 @btime get_camera(p1, at(ray, t), v1, 10.0f0, 50.0f0)
-# @test_no_allocs get_camera(p1, at(ray, t), v1, 10.0f0, 50.0f0) # some allocation occur
+@test_no_allocs get_camera(p1, at(ray, t), v1, 10.0f0, 50.0f0)
 
 
 # Camera
@@ -131,12 +131,10 @@ dist_to_focus = 10.0f0
 aperture = 0.1f0
 
 cam = get_camera(lookfrom, lookat, vup, 20.0f0, Float32(16/9), aperture, dist_to_focus)
-
 @btime get_camera(lookfrom, lookat, vup, 20.0f0, Float32(16/9), aperture, dist_to_focus)
 @test_no_allocs get_camera(lookfrom, lookat, vup, 20.0f0, Float32(16/9), aperture, dist_to_focus)
 
-
-
+println("get_ray(cam, 1.0f0, 10.0f0)")
 @btime get_ray(cam, 1.0f0, 10.0f0)
 @test_no_allocs get_ray(cam, 1.0f0, 10.0f0)
 

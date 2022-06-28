@@ -64,7 +64,7 @@ Additionally `vup` viewup is provided to allow for rotations.
 """
 function get_camera(lookfrom::Point{Float32}, lookat::Point{Float32}, vup::Vec{Float32}, vfov::Float32, aspect_ratio::Float32)
   θ = degrees_to_radians(vfov)
-  h = tan(θ/2)
+  h = tan(θ/2.0f0)
   viewport_height = 2.0f0 * h
   viewport_width = aspect_ratio * viewport_height
 
